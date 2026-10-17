@@ -11,50 +11,60 @@ export function fromPrice(item) {
   }, item.base_price_paise);
 }
 
-/** One line of a menu section: name and description on the left, price and add control on the right */
+/**
+ * One dish. Text always starts on the same left edge; a photo, when there is one, sits on the right
+ * with the add control overlapping its bottom edge (the Swiggy/Zomato pattern).
+ */
 export default function MenuItemRow({ item, inCartQty, onAdd, onSetQty, showVeg }) {
   const customisable = item.groups.length > 0;
   const soldOut = !item.is_available;
   const hasVariants = item.groups.some((g) => g.min_select > 0 && g.options.some((o) => o.price_delta_paise > 0));
+  const photo = Boolean(item.image_url);
+
+  const control = soldOut ? (
+    <span className="rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-ink-soft shadow-sm ring-1 ring-ink/10">Sold out</span>
+  ) : inCartQty > 0 && !customisable ? (
+    <div className="rounded-full bg-white shadow-md ring-1 ring-ink/10">
+      <Stepper value={inCartQty} onChange={onSetQty} size="sm" label={`${item.name} quantity`} />
+    </div>
+  ) : (
+    <button
+      onClick={onAdd}
+      className="relative flex h-9 items-center gap-1 rounded-full bg-white px-4 text-sm font-semibold text-espresso shadow-md ring-1 ring-ink/10 hover:bg-espresso hover:text-white"
+      aria-label={inCartQty > 0 ? `Add another ${item.name}, ${inCartQty} in your order` : `Add ${item.name}${customisable ? ', choose options' : ''}`}
+    >
+      <Plus size={15} strokeWidth={2.75} aria-hidden="true" /> Add
+      {inCartQty > 0 && (
+        <span className="num absolute -right-1.5 -top-1.5 grid h-5 min-w-[1.25rem] place-items-center rounded-full bg-espresso px-1 text-[11px] font-bold text-white" aria-hidden="true">
+          {inCartQty}
+        </span>
+      )}
+    </button>
+  );
 
   return (
-    <li className={`flex items-start gap-3 py-3.5 ${soldOut ? 'opacity-55' : ''}`}>
-      {item.image_url && <img src={item.image_url} alt="" loading="lazy" className="h-[72px] w-[72px] flex-none rounded-2xl bg-steel-200 object-cover shadow-sm shadow-ink/10" />}
+    <li className={`flex items-start gap-4 py-4 ${soldOut ? 'opacity-55' : ''}`}>
       <div className="min-w-0 flex-1">
-        <div className="flex items-baseline gap-3">
-          <h3 className="flex-1 font-serif text-[16px] font-semibold leading-snug">
-            {showVeg && <VegMark isVeg={item.is_veg} className="mr-1.5 align-[-1px]" />}
-            {item.name}
-          </h3>
-          <p className="num flex-none font-serif text-[17px] font-semibold">
-            {hasVariants && <span className="mr-1 font-sans text-xs font-normal text-ink-soft">from</span>}
-            {formatINR(fromPrice(item))}
-          </p>
-        </div>
-        {item.description && <p className="mt-0.5 text-[13px] leading-snug text-ink-soft">{item.description}</p>}
-        {item.is_bestseller && <p className="mt-1 text-xs font-semibold text-cardamom">Chef's pick</p>}
+        <h3 className="font-serif text-[16px] font-semibold leading-snug">
+          {showVeg && <VegMark isVeg={item.is_veg} className="mr-1.5 align-[-1px]" />}
+          {item.name}
+        </h3>
+        <p className="num mt-1 text-[15px] font-semibold tracking-tight">
+          {hasVariants && <span className="mr-1 text-xs font-normal text-ink-soft">from</span>}
+          {formatINR(fromPrice(item))}
+        </p>
+        {item.description && <p className="mt-1 text-[13px] leading-snug text-ink-soft">{item.description}</p>}
+        {customisable && !soldOut && <p className="mt-1.5 text-[11px] font-medium uppercase tracking-wider text-cardamom">Customisable</p>}
       </div>
 
-      <div className="flex w-[4.5rem] flex-none justify-end pt-0.5">
-        {soldOut ? (
-          <span className="pt-1 text-xs font-semibold text-ink-soft">Sold out</span>
-        ) : inCartQty > 0 && !customisable ? (
-          <Stepper value={inCartQty} onChange={onSetQty} size="sm" label={`${item.name} quantity`} />
-        ) : (
-          <button
-            onClick={onAdd}
-            className="relative grid h-9 w-9 place-items-center rounded-full border border-cardamom bg-white text-cardamom hover:bg-cardamom hover:text-white"
-            aria-label={inCartQty > 0 ? `Add another ${item.name}, ${inCartQty} in your order` : `Add ${item.name}${customisable ? ', choose options' : ''}`}
-          >
-            <Plus size={18} strokeWidth={2.5} aria-hidden="true" />
-            {inCartQty > 0 && (
-              <span className="num absolute -right-1.5 -top-1.5 grid h-5 min-w-[1.25rem] place-items-center rounded-full bg-cardamom px-1 text-[11px] font-bold text-white" aria-hidden="true">
-                {inCartQty}
-              </span>
-            )}
-          </button>
-        )}
-      </div>
+      {photo ? (
+        <div className="relative flex w-[104px] flex-none flex-col items-center pb-4">
+          <img src={item.image_url} alt="" loading="lazy" className="h-[104px] w-[104px] rounded-2xl bg-steel-200 object-cover" />
+          <div className="absolute bottom-0">{control}</div>
+        </div>
+      ) : (
+        <div className="flex-none pt-0.5">{control}</div>
+      )}
     </li>
   );
 }

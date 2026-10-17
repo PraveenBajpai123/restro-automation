@@ -8,7 +8,7 @@ import { useCart, cartCount } from '../stores/cart';
 import { computeBill, formatINR } from '../lib/money';
 import { OUTLET_SLUG } from '../lib/supabase';
 import { unlockSound } from '../lib/sound';
-import { CoinIcon, ErrorNote, Sheet, Spinner } from '../components/ui';
+import { CoinIcon, ErrorNote, PageLoader, Sheet, Spinner } from '../components/ui';
 import { recentOrders, rememberOrder } from '../hooks/useOrderTracking';
 import { useOrderContext } from './useOrderContext';
 import MenuItemRow, { fromPrice } from './MenuItemRow';
@@ -31,11 +31,16 @@ export default function MenuPage() {
   const [activeCat, setActiveCat] = useState(null);
   const [openCats, setOpenCats] = useState(() => new Set());
   const [credits, setCredits] = useState(null);
+  const [placed, setPlaced] = useState(null); // success message shown on the checkout button before moving on
   const [customizing, setCustomizing] = useState(null);
   const [sheet, setSheet] = useState(null); // 'cart' | 'checkout' | 'login'
   const [returnTo, setReturnTo] = useState(null);
   const [notice, setNotice] = useState(null);
   const sectionRefs = useRef({});
+  const pillRefs = useRef({});
+  const navRef = useRef(null);
+  const stickyRef = useRef(null);
+  const spyLockUntil = useRef(0);
 
   // Remember how the diner arrived (?table=5&k=…) so "Add more items" returns to the same table
   useEffect(() => {
@@ -92,8 +97,13 @@ export default function MenuPage() {
     });
     const result = await placeOrder(payload);
     rememberOrder(result.tracking_key, result.token_number);
-    cart.clear();
     if (customer.isPhoneUser) customer.refreshWallet().catch(() => {});
+    const finish = (state) => {
+      cart.clear();
+      setPlaced(null);
+      setSheet(null);
+      navigate(`/o/${result.tracking_key}`, { state });
+    };
 
     if (paymentMethod === 'razorpay') {
       try {
@@ -103,11 +113,13 @@ export default function MenuPage() {
         });
       } catch (e) {
         // Order exists; the status page offers "Pay now" again.
-        navigate(`/o/${result.tracking_key}`, { state: { payError: e.message } });
+        finish({ payError: e.message });
         return;
       }
     }
-    navigate(`/o/${result.tracking_key}`, { state: { justPlaced: true } });
+    setPlaced(context.mode === 'dine_in' ? `Order sent to table ${context.table}` : `Order placed. Token ${result.token_number}`);
+    await new Promise((r) => setTimeout(r, 1100));
+    finish({ justPlaced: true });
   };
 
   const searching = Boolean(query.trim()) || vegOnly;
@@ -126,10 +138,44 @@ export default function MenuPage() {
   }, [categories]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const scrollTo = (id) => {
+    spyLockUntil.current = Date.now() + 900; // let the smooth scroll finish before scroll-spy takes over again
     setActiveCat(id);
     setOpenCats((prev) => new Set(prev).add(id));
     requestAnimationFrame(() => sectionRefs.current[id]?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
   };
+
+  // Scroll-spy: the pill bar follows whichever section is under the sticky bar
+  useEffect(() => {
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      if (Date.now() < spyLockUntil.current) return;
+      const line = (stickyRef.current?.getBoundingClientRect().bottom ?? 0) + 16;
+      let current = null;
+      for (const c of filtered) {
+        const el = sectionRefs.current[c.id];
+        if (!el) continue;
+        if (el.getBoundingClientRect().top <= line) current = c.id;
+        else break;
+      }
+      setActiveCat(current);
+    };
+    const onScroll = () => { if (!frame) frame = requestAnimationFrame(update); };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    update();
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      if (frame) cancelAnimationFrame(frame);
+    };
+  }, [filtered]);
+
+  // Keep the active pill visible in the horizontally scrolling bar
+  useEffect(() => {
+    const nav = navRef.current;
+    const pill = pillRefs.current[activeCat];
+    if (!nav || !pill) return;
+    nav.scrollTo({ left: pill.offsetLeft - nav.clientWidth / 2 + pill.clientWidth / 2, behavior: 'smooth' });
+  }, [activeCat]);
 
   const hasNonVeg = categories.some((c) => c.items.some((i) => i.is_veg === false));
   const picks = categories.flatMap((c) => c.items).filter((i) => i.is_bestseller && i.is_available).slice(0, 10);
@@ -140,7 +186,7 @@ export default function MenuPage() {
   })();
   const thumbOf = (c) => c.image_url || c.items.find((i) => i.image_url)?.image_url;
 
-  if (outletLoading) return <Spinner label="Loading menu" />;
+  if (outletLoading) return <PageLoader label="Opening the menu" />;
   if (outletError) return <main className="mx-auto max-w-lg p-6"><ErrorNote>{outletError}</ErrorNote></main>;
 
   return (
@@ -173,7 +219,7 @@ export default function MenuPage() {
                     key={m}
                     onClick={() => context.setMode(m)}
                     aria-pressed={context.mode === m}
-                    className={`rounded-full px-4 py-1.5 ${context.mode === m ? 'bg-cardamom text-white shadow-sm' : 'text-ink-soft'}`}
+                    className={`rounded-full px-4 py-1.5 ${context.mode === m ? 'bg-espresso text-white shadow-sm' : 'text-ink-soft'}`}
                   >
                     {m === 'dine_in' ? `Table ${context.table}` : 'Takeaway'}
                   </button>
@@ -196,7 +242,7 @@ export default function MenuPage() {
         )}
       </div>
 
-      <div className="sticky top-0 z-30 bg-steel/95 pt-3 backdrop-blur">
+      <div ref={stickyRef} className="sticky top-0 z-30 bg-steel/95 pt-3 backdrop-blur">
         <div className="flex items-center gap-2 px-5">
           <label className="relative flex-1">
             <Search size={18} className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-steel-500" aria-hidden="true" />
@@ -212,13 +258,14 @@ export default function MenuPage() {
             </button>
           )}
         </div>
-        <nav className="flex gap-2 overflow-x-auto px-5 py-3 [scrollbar-width:none]" aria-label="Menu sections">
+        <nav ref={navRef} className="relative flex gap-2 overflow-x-auto px-5 py-3 [scrollbar-width:none]" aria-label="Menu sections">
           {filtered.map((c) => {
             const on = activeCat === c.id;
             const thumb = thumbOf(c);
             return (
               <button
                 key={c.id}
+                ref={(el) => (pillRefs.current[c.id] = el)}
                 onClick={() => scrollTo(c.id)}
                 aria-current={on ? 'true' : undefined}
                 className={`flex flex-none items-center gap-2 whitespace-nowrap rounded-full border py-1 text-sm ${thumb ? 'pl-1 pr-4' : 'px-4 py-1.5'} ${on ? 'border-cardamom bg-cardamom font-semibold text-white' : 'border-ink/10 bg-ink/[0.08] text-ink'}`}
@@ -251,7 +298,7 @@ export default function MenuPage() {
                       </span>
                     )}
                     <span className="mt-2 block truncate text-[13px] font-medium">{i.name}</span>
-                    <span className="num block font-serif text-[17px] font-semibold">{formatINR(fromPrice(i))}</span>
+                    <span className="num block text-[15px] font-semibold tracking-tight">{formatINR(fromPrice(i))}</span>
                   </button>
                 </li>
               ))}
@@ -267,7 +314,6 @@ export default function MenuPage() {
           <div className="mt-5 space-y-3">
             {filtered.map((c) => {
               const open = isOpen(c.id);
-              const thumb = thumbOf(c);
               return (
                 <section
                   key={c.id}
@@ -281,9 +327,8 @@ export default function MenuPage() {
                       aria-controls={`cat-${c.id}`}
                       className="flex w-full items-center gap-3 px-4 py-3.5 text-left"
                     >
-                      {thumb && <img src={thumb} alt="" className="h-10 w-10 flex-none rounded-lg object-cover" />}
                       <span className="flex-1 font-serif text-[18px] font-semibold text-cardamom">{c.name}</span>
-                      <span className="num text-xs text-ink-soft">{c.items.length}</span>
+                      <span className="num rounded-full bg-ink/[0.06] px-2 py-0.5 text-[11px] font-medium text-ink-soft">{c.items.length}</span>
                       <ChevronDown size={18} className={`text-ink-soft transition-transform ${open ? 'rotate-180' : ''}`} aria-hidden="true" />
                     </button>
                   </h2>
@@ -334,7 +379,7 @@ export default function MenuPage() {
 
       {count > 0 && !sheet && !customizing && (
         <div className="fixed inset-x-0 bottom-0 z-30 mx-auto max-w-2xl px-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
-          <button onClick={() => setSheet('cart')} className="flex w-full items-center justify-between rounded-full bg-cardamom px-6 py-4 text-white shadow-xl shadow-ink/20 hover:bg-cardamom-dark">
+          <button onClick={() => setSheet('cart')} className="flex w-full items-center justify-between rounded-full bg-espresso px-6 py-4 text-white shadow-2xl shadow-espresso/30 hover:bg-espresso-soft">
             <span className="flex items-center gap-3">
               <ShoppingBag size={20} aria-hidden="true" />
               <span className="num font-semibold">{count} item{count > 1 ? 's' : ''}</span>
@@ -349,6 +394,7 @@ export default function MenuPage() {
 
       {customizing && (
         <ItemCustomizerSheet
+          showVeg={hasNonVeg}
           item={customizing}
           onClose={() => setCustomizing(null)}
           onAdd={(item, options, qty) => {
@@ -358,6 +404,7 @@ export default function MenuPage() {
         />
       )}
       <CartSheet
+        showVeg={hasNonVeg}
         open={sheet === 'cart'}
         onClose={() => setSheet(null)}
         cart={cart}
@@ -378,6 +425,7 @@ export default function MenuPage() {
         customer={customer}
         onSignIn={() => openLogin('checkout')}
         onPlace={handlePlace}
+        placed={placed}
       />
       <PhoneLoginSheet
         open={sheet === 'login'}

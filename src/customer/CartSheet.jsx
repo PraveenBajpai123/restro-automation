@@ -1,10 +1,10 @@
-import { Sheet, Stepper, VegMark, CoinIcon } from '../components/ui';
+import { Sheet, Stepper, VegMark } from '../components/ui';
 import { formatINR, lineTotalPaise } from '../lib/money';
 import BillSummary from './BillSummary';
+import LoyaltyBox from './LoyaltyBox';
 
-export default function CartSheet({ open, onClose, cart, bill, previewEarn, outlet, customer, context, onSignIn, onCheckout }) {
+export default function CartSheet({ showVeg = false, open, onClose, cart, bill, previewEarn, outlet, customer, context, onSignIn, onCheckout }) {
   const { lines, setQty, redeemCoins, setRedeem, notes, setNotes } = cart;
-  const wallet = customer.wallet;
 
   return (
     <Sheet
@@ -25,7 +25,7 @@ export default function CartSheet({ open, onClose, cart, bill, previewEarn, outl
         <ul className="divide-y divide-steel-200">
           {lines.map((l) => (
             <li key={l.key} className="flex items-start gap-3 py-4">
-              <VegMark isVeg={l.isVeg} className="mt-1.5" />
+              {showVeg && <VegMark isVeg={l.isVeg} className="mt-1.5" />}
               <div className="min-w-0 flex-1">
                 <p className="font-semibold leading-snug">{l.name}</p>
                 {l.options.length > 0 && <p className="mt-0.5 text-sm text-ink-soft">{l.options.map((o) => o.name).join(', ')}</p>}
@@ -52,44 +52,7 @@ export default function CartSheet({ open, onClose, cart, bill, previewEarn, outl
           </label>
 
           {outlet?.loyalty_enabled && (
-            <section className="mt-5 rounded-2xl bg-haldi-light p-4" aria-label="Store coins">
-              {customer.isPhoneUser && wallet ? (
-                <>
-                  <div className="flex items-center justify-between gap-3">
-                    <div>
-                      <p className="flex items-center gap-1.5 font-semibold text-ink">
-                        <CoinIcon /> <span className="num">{wallet.coin_balance}</span> coins
-                      </p>
-                      <p className="mt-0.5 text-sm text-haldi-dark">
-                        {bill.maxRedeemable > 0
-                          ? `Use ${bill.maxRedeemable} coins to save ${formatINR(bill.maxRedeemable * 100)}`
-                          : wallet.coin_balance > 0
-                            ? 'Add more to use your coins on this order'
-                            : 'You earn coins on every completed order'}
-                      </p>
-                    </div>
-                    {bill.maxRedeemable > 0 && (
-                      <label className="relative inline-flex cursor-pointer items-center">
-                        <input type="checkbox" className="peer sr-only" checked={redeemCoins} onChange={(e) => setRedeem(e.target.checked)} />
-                        <span className="h-7 w-12 rounded-full bg-steel-300 transition-colors peer-checked:bg-cardamom peer-focus-visible:ring-2 peer-focus-visible:ring-cardamom peer-focus-visible:ring-offset-2" />
-                        <span className="absolute left-1 top-1 h-5 w-5 rounded-full bg-white transition-transform peer-checked:translate-x-5" />
-                        <span className="sr-only">Redeem coins</span>
-                      </label>
-                    )}
-                  </div>
-                  {bill.earn > 0 && <p className="mt-2 text-sm text-ink-soft">You will earn {bill.earn} coins when this order is completed.</p>}
-                </>
-              ) : (
-                <div className="flex items-center justify-between gap-3">
-                  <p className="text-sm text-ink">
-                    <span className="font-semibold">Earn {previewEarn} coins on this order.</span> 1 coin = ₹1 off your next visit.
-                  </p>
-                  <button onClick={onSignIn} className="btn-quiet flex-none px-3 py-2 text-sm">
-                    Add phone
-                  </button>
-                </div>
-              )}
-            </section>
+            <LoyaltyBox customer={customer} bill={bill} previewEarn={previewEarn} redeemCoins={redeemCoins} setRedeem={setRedeem} />
           )}
 
           <section className="mt-5">

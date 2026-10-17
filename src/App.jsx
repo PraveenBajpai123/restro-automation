@@ -4,7 +4,7 @@ import { isConfigured } from './lib/supabase';
 import MenuPage from './customer/MenuPage';
 import OrderStatusPage from './customer/OrderStatusPage';
 import { StaffProvider } from './hooks/useStaff';
-import { Spinner } from './components/ui';
+import { PageLoader } from './components/ui';
 
 // Staff and owner screens load on demand so diners on mobile data only download the menu.
 const LoginPage = lazy(() => import('./staff/LoginPage'));
@@ -46,7 +46,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <StaffProvider>
-        <Suspense fallback={<Spinner />}>
+        <Suspense fallback={<PageLoader />}>
         <Routes>
           <Route path="/" element={<LegacyRedirect />} />
           <Route path="/menu" element={<MenuPage />} />

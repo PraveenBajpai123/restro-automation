@@ -9,6 +9,7 @@ export default {
         ink: { DEFAULT: '#4F2F1E', soft: '#77634E', 900: '#24160E', 800: '#33211A', 700: '#4A3326' },
         cardamom: { DEFAULT: '#AA5F29', dark: '#8C4C1F', light: '#F3E3D3' },
         veg: '#2F7D32',
+        espresso: { DEFAULT: '#1E1B18', soft: '#3A332D' },
         haldi: { DEFAULT: '#F2B705', light: '#FDF3CF', dark: '#8A6A00' },
         chilli: { DEFAULT: '#C2412D', light: '#F8E3DF' },
       },

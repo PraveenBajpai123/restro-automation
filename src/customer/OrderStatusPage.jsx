@@ -6,7 +6,7 @@ import { CUSTOMER_STEPS, customerStatusLabel, isFinal } from '../lib/orderStatus
 import { formatINR } from '../lib/money';
 import { buildUpiLink, UPI_APPS, appLink } from '../lib/upi';
 import { playSound, unlockSound } from '../lib/sound';
-import { ErrorNote, Spinner, CoinIcon } from '../components/ui';
+import { ErrorNote, CoinIcon } from '../components/ui';
 import BillSummary from './BillSummary';
 import { payWithRazorpay } from './payments';
 
@@ -52,7 +52,19 @@ export default function OrderStatusPage() {
   }, []);
 
   if (error) return <main className="mx-auto max-w-lg p-6"><ErrorNote onRetry={reload}>{error}</ErrorNote></main>;
-  if (!order) return <Spinner label="Loading your order" />;
+  if (!order)
+    return (
+      <div className="mx-auto min-h-dvh max-w-lg px-5 pt-[max(1.5rem,env(safe-area-inset-top))]" role="status" aria-label="Loading your order">
+        <div className="h-4 w-32 animate-pulse rounded bg-ink/10" />
+        <div className="mt-4 rounded-[28px] bg-white p-6 shadow-sm ring-1 ring-steel-200">
+          <div className="h-4 w-24 animate-pulse rounded bg-ink/10" />
+          <div className="mt-3 h-24 w-40 animate-pulse rounded-2xl bg-ink/10" />
+          <div className="mt-5 h-6 w-48 animate-pulse rounded bg-ink/10" />
+          <div className="mt-8 grid grid-cols-3 gap-2">{[0, 1, 2].map((i) => <div key={i} className="h-1.5 animate-pulse rounded-full bg-ink/10" />)}</div>
+        </div>
+        <div className="mt-6 h-40 animate-pulse rounded-2xl bg-white/70 ring-1 ring-steel-200" />
+      </div>
+    );
 
   const ready = order.status === 'ready';
   const stopped = ['cancelled', 'rejected'].includes(order.status);

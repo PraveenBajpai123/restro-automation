@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { CreditCard, Smartphone, Store } from 'lucide-react';
+import { Check, CreditCard, Smartphone, Store } from 'lucide-react';
 import { Sheet, ErrorNote, CoinIcon } from '../components/ui';
 import { formatINR } from '../lib/money';
 
@@ -14,7 +14,7 @@ export function availableMethods(outlet) {
   return m;
 }
 
-export default function CheckoutSheet({ open, onClose, outlet, context, bill, customer, onSignIn, onPlace }) {
+export default function CheckoutSheet({ open, onClose, outlet, context, bill, customer, onSignIn, onPlace, placed }) {
   const methods = useMemo(() => availableMethods(outlet), [outlet]);
   const [method, setMethod] = useState(methods[0]?.id);
   const [name, setName] = useState('');
@@ -50,8 +50,19 @@ export default function CheckoutSheet({ open, onClose, outlet, context, bill, cu
       footer={
         <>
           <ErrorNote>{error}</ErrorNote>
-          <button className="btn-primary mt-3 w-full text-lg" disabled={busy || !method} onClick={submit}>
-            {busy ? 'Placing your order…' : <>{cta} <span className="num">{formatINR(bill.total)}</span></>}
+          <button
+            className={`btn-primary mt-3 w-full text-lg transition-colors duration-300 ${placed ? '!bg-veg !opacity-100' : ''}`}
+            disabled={busy || !method}
+            onClick={submit}
+            aria-live="polite"
+          >
+            {placed ? (
+              <><Check size={22} strokeWidth={3} className="token-in" aria-hidden="true" /> {placed}</>
+            ) : busy ? (
+              <><span className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" aria-hidden="true" /> Placing your order…</>
+            ) : (
+              <>{cta} <span className="num">{formatINR(bill.total)}</span></>
+            )}
           </button>
         </>
       }

@@ -22,7 +22,7 @@ function defaultsFor(item) {
 }
 
 /** Variations + add-ons picker. Price updates live as options change. */
-export default function ItemCustomizerSheet({ item, onClose, onAdd }) {
+export default function ItemCustomizerSheet({ item, onClose, onAdd, showVeg = false }) {
   const [selected, setSelected] = useState({});
   const [qty, setQty] = useState(1);
 
@@ -69,7 +69,7 @@ export default function ItemCustomizerSheet({ item, onClose, onAdd }) {
     >
       {item.image_url && <img src={item.image_url} alt="" className="mb-4 aspect-[16/9] w-full rounded-2xl object-cover" />}
       <div className="flex items-center gap-2 text-sm text-ink-soft">
-        <VegMark isVeg={item.is_veg} />
+        {showVeg && <VegMark isVeg={item.is_veg} />}
         <span className="num">{formatINR(item.base_price_paise)}</span>
       </div>
       {item.description && <p className="mt-2 text-ink-soft">{item.description}</p>}
@@ -98,7 +98,7 @@ export default function ItemCustomizerSheet({ item, onClose, onAdd }) {
                       onChange={() => toggle(g, o.id)}
                       className="h-5 w-5 accent-cardamom"
                     />
-                    <VegMark isVeg={o.is_veg} />
+                    {showVeg && <VegMark isVeg={o.is_veg} />}
                     <span className="flex-1">{o.name}{!o.is_available && ' (sold out)'}</span>
                     <span className="num text-ink-soft">{o.price_delta_paise > 0 ? `+${formatINR(o.price_delta_paise)}` : ''}</span>
                   </label>

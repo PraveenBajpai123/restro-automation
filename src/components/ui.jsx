@@ -63,6 +63,21 @@ export function Stepper({ value, onChange, min = 0, max = 50, size = 'md', label
   );
 }
 
+/** Full-screen loading state: centred, branded, calm */
+export function PageLoader({ label = 'Loading' }) {
+  return (
+    <div className="grid min-h-dvh place-items-center bg-steel px-6" role="status" aria-live="polite">
+      <div className="flex flex-col items-center gap-4 text-center">
+        <span className="relative grid h-14 w-14 place-items-center">
+          <span className="absolute inset-0 animate-spin rounded-full border-[3px] border-ink/10 border-t-cardamom [animation-duration:1.1s]" />
+          <span className="h-2.5 w-2.5 rounded-full bg-cardamom" />
+        </span>
+        <p className="font-serif text-lg text-ink-soft">{label}</p>
+      </div>
+    </div>
+  );
+}
+
 export function Spinner({ label = 'Loading' }) {
   return (
     <div className="flex items-center justify-center p-10 text-ink-soft" role="status">
