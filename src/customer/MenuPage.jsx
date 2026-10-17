@@ -132,6 +132,11 @@ export default function MenuPage() {
 
   const hasNonVeg = categories.some((c) => c.items.some((i) => i.is_veg === false));
   const picks = categories.flatMap((c) => c.items).filter((i) => i.is_bestseller && i.is_available).slice(0, 10);
+  // "Berries Café & Restaurant" -> script "Berries" + small caps "Café & Restaurant", like the wall sign
+  const brand = (() => {
+    const [first, ...rest] = (outlet?.name || '').split(' ');
+    return { first, rest: rest.join(' ') };
+  })();
   const thumbOf = (c) => c.items.find((i) => i.image_url)?.image_url;
 
   if (outletLoading) return <Spinner label="Loading menu" />;
@@ -139,12 +144,15 @@ export default function MenuPage() {
 
   return (
     <div className="mx-auto min-h-dvh max-w-2xl pb-32">
-      <header className="relative h-56 overflow-hidden bg-gradient-to-br from-cardamom via-ink-700 to-ink-900 text-white">
-        {outlet.cover_url && <img src={outlet.cover_url} alt="" className="absolute inset-0 h-full w-full object-cover" />}
-        <div className="absolute inset-0 bg-gradient-to-b from-ink-900/20 via-ink-900/35 to-ink-900/70" aria-hidden="true" />
+      <header className="relative h-60 overflow-hidden bg-gradient-to-br from-cardamom via-ink-700 to-ink-900 text-white">
+        <img src={outlet.cover_url || '/berries-cover.webp'} alt="" className={`absolute inset-0 h-full w-full object-cover ${outlet.cover_url ? '' : 'origin-[0%_45%] scale-[1.6]'}`} />
+        <div className="absolute inset-0 bg-gradient-to-b from-ink-900/25 via-ink-900/45 to-ink-900/75" aria-hidden="true" />
         <div className="relative flex h-full flex-col items-center justify-center px-6 pb-6 pt-[env(safe-area-inset-top)] text-center">
           {outlet.logo_url && <img src={outlet.logo_url} alt="" className="mb-3 h-14 w-14 rounded-2xl object-cover shadow-lg" />}
-          <h1 className="font-serif text-[30px] font-semibold uppercase leading-tight tracking-[0.1em] [text-shadow:0_2px_12px_rgba(0,0,0,.35)]">{outlet.name}</h1>
+          <h1 aria-label={outlet.name}>
+            <span className="neon-sign block font-script text-[68px] leading-[1.05]">{brand.first}</span>
+            {brand.rest && <span className="mt-1 block text-[11px] font-semibold uppercase tracking-[0.35em] text-white/90">{brand.rest}</span>}
+          </h1>
           {outlet.address && <p className="mt-1.5 text-sm text-white/85">{outlet.address}</p>}
         </div>
         {customer.isPhoneUser && wallet && (
