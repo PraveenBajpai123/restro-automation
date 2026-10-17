@@ -8,7 +8,9 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:db": "node supabase/tests/schema.test.mjs supabase/migrations/20261017000000_unified_schema.sql supabase/seed.sql"
+    "test:db": "node supabase/tests/schema.test.mjs supabase/migrations/20261017000000_unified_schema.sql supabase/seed.sql",
+    "menu:build": "node scripts/menu-to-sql.mjs supabase/menus/berries.json > supabase/seed_berries.sql",
+    "test:menu": "node supabase/tests/menu.test.mjs supabase/migrations/20261017000000_unified_schema.sql supabase/seed.sql supabase/seed_berries.sql"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.57.0",

@@ -63,6 +63,24 @@ npx supabase functions serve --env-file supabase/functions/.env
 
 with `supabase/functions/.env` containing `RAZORPAY_KEY_ID`, `RAZORPAY_KEY_SECRET`, `RAZORPAY_WEBHOOK_SECRET` (test-mode keys).
 
+## Load your menu
+
+The live menu is **Berries Café & Restaurant** (`supabase/menus/berries.json`, 279 items in 30 sections, with
+syrups, plant milks, toppings, ice cream scoops, pasta sauces and veggies, paratha fillings and single/double espresso
+as add-on choices). To change it in bulk, edit the JSON, then:
+
+```bash
+npm run menu:build
+```
+
+```bash
+npm run test:menu
+```
+
+and run `supabase/seed_berries.sql` in the Supabase SQL Editor. It is safe to re-run: the previous menu is
+retired (past orders keep their lines) and replaced. Day-to-day changes such as prices, photos and sold-out items are
+easier in **Owner → Menu**.
+
 ## Tests
 
 ```bash
