@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { supabase, must } from '../lib/supabase';
 
 const MENU_SELECT = `
-  id, name, sort_order,
+  *,
   menu_items (
     id, name, description, image_url, base_price_paise, is_veg, is_bestseller, is_available, sort_order,
     menu_item_modifier_groups (

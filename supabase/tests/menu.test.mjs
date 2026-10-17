@@ -79,5 +79,14 @@ const roti = (await item('Tandoori Roti Butter'))[0].id;
 const r = await order([{ menu_item_id: roti, quantity: 4, option_ids: [] }]);
 ok(r.subtotal_paise === 22000, '4 butter rotis = ₹220', r);
 
+// Photos-only update: idempotent, and leaves owner edits such as prices alone
+const photos = fs.readFileSync(menuPath.replace('seed_berries.sql', 'update_berries_photos.sql'), 'utf8');
+await db.query(`update menu_items set base_price_paise = 99900 where name = 'Caffè Latte'`);
+await db.exec(photos);
+await db.exec(photos);
+const res = (await db.query(photos.slice(photos.indexOf("select 'Photos updated'")))).rows[0];
+ok(Number(res.section_photos) === 28 && Number(res.item_photos) === 23 && Number(res.chef_picks) === 8, '28 section photos, 23 item photos, 8 chef picks', res);
+ok((await db.query(`select base_price_paise from menu_items where name = 'Caffè Latte' and is_active`)).rows[0].base_price_paise === 99900, 'photo update keeps owner price edits');
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

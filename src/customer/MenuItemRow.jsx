@@ -19,7 +19,7 @@ export default function MenuItemRow({ item, inCartQty, onAdd, onSetQty, showVeg 
 
   return (
     <li className={`flex items-start gap-3 py-3.5 ${soldOut ? 'opacity-55' : ''}`}>
-      {item.image_url && <img src={item.image_url} alt="" loading="lazy" className="h-14 w-14 flex-none rounded-xl bg-steel-200 object-cover" />}
+      {item.image_url && <img src={item.image_url} alt="" loading="lazy" className="h-[72px] w-[72px] flex-none rounded-2xl bg-steel-200 object-cover shadow-sm shadow-ink/10" />}
       <div className="min-w-0 flex-1">
         <div className="flex items-baseline gap-3">
           <h3 className="flex-1 font-serif text-[16px] font-semibold leading-snug">

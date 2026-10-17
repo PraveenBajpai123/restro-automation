@@ -1,5 +1,7 @@
 // Turns a menu JSON file (supabase/menus/*.json) into an idempotent SQL seed.
 //   node scripts/menu-to-sql.mjs supabase/menus/berries.json > supabase/seed_berries.sql
+//   node scripts/menu-to-sql.mjs supabase/menus/berries.json --photos > supabase/update_berries_photos.sql
+// --photos only sets section/item photos and Chef's Picks by name, leaving prices and owner edits alone.
 // Item rows: [name, priceRupees, description?, groupKeys?]. Category "groups" apply to every item in it.
 // Re-running is safe: the outlet's previous menu is soft-deleted (past orders keep their records).
 import { readFileSync } from 'node:fs';
@@ -7,7 +9,8 @@ import { readFileSync } from 'node:fs';
 const file = process.argv[2];
 if (!file) throw new Error('Usage: node scripts/menu-to-sql.mjs <menu.json>');
 const menu = JSON.parse(readFileSync(file, 'utf8'));
-const { outlet, groups, categories } = menu;
+const { outlet, groups, categories, itemPhotos = {}, chefPicks = [] } = menu;
+const photosOnly = process.argv.includes('--photos');
 
 const q = (s) => (s == null ? 'null' : `'${String(s).replaceAll("'", "''")}'`);
 const paise = (rupees) => {
@@ -17,6 +20,24 @@ const paise = (rupees) => {
 const O = q(outlet.id);
 const out = [];
 const emit = (s) => out.push(s);
+
+if (photosOnly) {
+  emit(`-- Generated from ${file.replaceAll('\\', '/')} by scripts/menu-to-sql.mjs --photos. Safe to re-run.`);
+  emit('begin;');
+  emit('alter table menu_categories add column if not exists image_url text;');
+  for (const c of categories)
+    emit(`update menu_categories set image_url = ${q(c.image ?? null)} where outlet_id = ${O} and name = ${q(c.name)};`);
+  for (const [name, url] of Object.entries(itemPhotos))
+    emit(`update menu_items set image_url = ${q(url)} where outlet_id = ${O} and is_active and name = ${q(name)};`);
+  emit(`update menu_items set is_bestseller = (name = any(array[${chefPicks.map(q).join(', ')}]::text[])) where outlet_id = ${O} and is_active;`);
+  emit('commit;');
+  emit(`select 'Photos updated' as result,
+  (select count(*) from menu_categories where outlet_id = ${O} and is_active and image_url is not null) as section_photos,
+  (select count(*) from menu_items where outlet_id = ${O} and is_active and image_url is not null) as item_photos,
+  (select count(*) from menu_items where outlet_id = ${O} and is_active and is_bestseller) as chef_picks;`);
+  process.stdout.write(out.join('\n') + '\n');
+  process.exit(0);
+}
 
 emit(`-- Generated from ${file.replaceAll('\\', '/')} by scripts/menu-to-sql.mjs. Edit the JSON, not this file.`);
 emit('begin;');
@@ -29,6 +50,7 @@ update menu_items set is_active = false where outlet_id = ${O};
 update menu_categories set is_active = false where outlet_id = ${O};
 update modifier_groups set is_active = false where outlet_id = ${O};`);
 
+emit('alter table menu_categories add column if not exists image_url text;');
 emit('create temp table _g (key text primary key, id uuid) on commit drop;');
 let gi = 0;
 for (const [key, g] of Object.entries(groups)) {
@@ -44,15 +66,15 @@ insert into _g select ${q(key)}, id from g;`);
 let itemCount = 0;
 for (const [ci, c] of categories.entries()) {
   emit(`\n-- ${c.name}`);
-  emit(`insert into menu_categories (outlet_id, name, sort_order) values (${O}, ${q(c.name)}, ${ci + 1})
-on conflict (outlet_id, name) do update set is_active = true, sort_order = excluded.sort_order;`);
+  emit(`insert into menu_categories (outlet_id, name, sort_order, image_url) values (${O}, ${q(c.name)}, ${ci + 1}, ${q(c.image ?? null)})
+on conflict (outlet_id, name) do update set is_active = true, sort_order = excluded.sort_order, image_url = excluded.image_url;`);
   for (const [ii, row] of c.items.entries()) {
     const [name, price, description = null, itemGroups = []] = row;
     const keys = [...new Set([...itemGroups, ...(c.groups ?? [])])];
     for (const k of keys) if (!groups[k]) throw new Error(`Unknown group "${k}" on ${name}`);
     itemCount++;
-    const insert = `insert into menu_items (outlet_id, category_id, name, description, base_price_paise, is_veg, sort_order)
-  values (${O}, (select id from menu_categories where outlet_id = ${O} and name = ${q(c.name)}), ${q(name)}, ${q(description)}, ${paise(price)}, true, ${ii + 1})`;
+    const insert = `insert into menu_items (outlet_id, category_id, name, description, image_url, base_price_paise, is_veg, is_bestseller, sort_order)
+  values (${O}, (select id from menu_categories where outlet_id = ${O} and name = ${q(c.name)}), ${q(name)}, ${q(description)}, ${q(itemPhotos[name] ?? null)}, ${paise(price)}, true, ${chefPicks.includes(name)}, ${ii + 1})`;
     if (!keys.length) {
       emit(`${insert};`);
       continue;

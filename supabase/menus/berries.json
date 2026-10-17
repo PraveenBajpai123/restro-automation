@@ -6,222 +6,1702 @@
     "invoice_prefix": "BER"
   },
   "groups": {
-    "espresso": { "name": "Shot", "min": 1, "max": 1, "options": [["Single", 0, true], ["Double", 40]] },
-    "sauce": { "name": "Pasta Sauce", "min": 1, "max": 1, "options": [["Arrabbiata", 0, true], ["Alfredo", 0], ["Pesto", 0], ["Roasted Bell Pepper", 0]] },
-    "veggies": { "name": "Extra Veggies", "min": 0, "max": 5, "options": [["Broccoli", 89], ["Bell Peppers", 89], ["Jalapeño", 89], ["Black Olives", 89], ["Green Olives", 89], ["Cherry Tomato", 89], ["Mushroom", 89], ["Onion", 89], ["Zucchini", 89], ["Golden Corn", 89], ["Baby Corn", 89]] },
-    "paratha": { "name": "Paratha Filling", "min": 1, "max": 1, "options": [["Aloo", 0, true], ["Paneer", 0], ["Gobhi", 0], ["Aachari", 0]] },
-    "shot": { "name": "Extra Shot", "min": 0, "max": 1, "options": [["Extra Espresso Shot", 45]] },
-    "syrup": { "name": "Flavoured Syrup", "min": 0, "max": 2, "options": [["Caramel", 45], ["Vanilla", 45], ["Hazelnut", 45], ["Butterscotch", 45], ["Rose", 45], ["Cinnamon", 45]] },
-    "milk": { "name": "Plant-based Milk", "min": 0, "max": 1, "options": [["Almond Milk", 85], ["Soy Milk", 85], ["Oat Milk", 85], ["Coconut Milk", 85]] },
-    "topping": { "name": "Toppings", "min": 0, "max": 3, "options": [["Whipped Cream", 65], ["Chocolate Drizzle", 65], ["Caramel", 65], ["Crushed Biscoff", 65], ["Cocoa", 65]] },
-    "scoop": { "name": "Ice Cream Scoop", "min": 0, "max": 2, "options": [["Vanilla Scoop", 65], ["Chocolate Scoop", 65]] }
+    "espresso": {
+      "name": "Shot",
+      "min": 1,
+      "max": 1,
+      "options": [
+        [
+          "Single",
+          0,
+          true
+        ],
+        [
+          "Double",
+          40
+        ]
+      ]
+    },
+    "sauce": {
+      "name": "Pasta Sauce",
+      "min": 1,
+      "max": 1,
+      "options": [
+        [
+          "Arrabbiata",
+          0,
+          true
+        ],
+        [
+          "Alfredo",
+          0
+        ],
+        [
+          "Pesto",
+          0
+        ],
+        [
+          "Roasted Bell Pepper",
+          0
+        ]
+      ]
+    },
+    "veggies": {
+      "name": "Extra Veggies",
+      "min": 0,
+      "max": 5,
+      "options": [
+        [
+          "Broccoli",
+          89
+        ],
+        [
+          "Bell Peppers",
+          89
+        ],
+        [
+          "Jalapeño",
+          89
+        ],
+        [
+          "Black Olives",
+          89
+        ],
+        [
+          "Green Olives",
+          89
+        ],
+        [
+          "Cherry Tomato",
+          89
+        ],
+        [
+          "Mushroom",
+          89
+        ],
+        [
+          "Onion",
+          89
+        ],
+        [
+          "Zucchini",
+          89
+        ],
+        [
+          "Golden Corn",
+          89
+        ],
+        [
+          "Baby Corn",
+          89
+        ]
+      ]
+    },
+    "paratha": {
+      "name": "Paratha Filling",
+      "min": 1,
+      "max": 1,
+      "options": [
+        [
+          "Aloo",
+          0,
+          true
+        ],
+        [
+          "Paneer",
+          0
+        ],
+        [
+          "Gobhi",
+          0
+        ],
+        [
+          "Aachari",
+          0
+        ]
+      ]
+    },
+    "shot": {
+      "name": "Extra Shot",
+      "min": 0,
+      "max": 1,
+      "options": [
+        [
+          "Extra Espresso Shot",
+          45
+        ]
+      ]
+    },
+    "syrup": {
+      "name": "Flavoured Syrup",
+      "min": 0,
+      "max": 2,
+      "options": [
+        [
+          "Caramel",
+          45
+        ],
+        [
+          "Vanilla",
+          45
+        ],
+        [
+          "Hazelnut",
+          45
+        ],
+        [
+          "Butterscotch",
+          45
+        ],
+        [
+          "Rose",
+          45
+        ],
+        [
+          "Cinnamon",
+          45
+        ]
+      ]
+    },
+    "milk": {
+      "name": "Plant-based Milk",
+      "min": 0,
+      "max": 1,
+      "options": [
+        [
+          "Almond Milk",
+          85
+        ],
+        [
+          "Soy Milk",
+          85
+        ],
+        [
+          "Oat Milk",
+          85
+        ],
+        [
+          "Coconut Milk",
+          85
+        ]
+      ]
+    },
+    "topping": {
+      "name": "Toppings",
+      "min": 0,
+      "max": 3,
+      "options": [
+        [
+          "Whipped Cream",
+          65
+        ],
+        [
+          "Chocolate Drizzle",
+          65
+        ],
+        [
+          "Caramel",
+          65
+        ],
+        [
+          "Crushed Biscoff",
+          65
+        ],
+        [
+          "Cocoa",
+          65
+        ]
+      ]
+    },
+    "scoop": {
+      "name": "Ice Cream Scoop",
+      "min": 0,
+      "max": 2,
+      "options": [
+        [
+          "Vanilla Scoop",
+          65
+        ],
+        [
+          "Chocolate Scoop",
+          65
+        ]
+      ]
+    }
+  },
+  "chefPicks": [
+    "Caffè Latte",
+    "Nachos Mexicana",
+    "Dragon Sushi",
+    "Chilli Cheese Toast",
+    "Volcano Cheese Burger",
+    "Cranberry Mojito",
+    "Affogato Bliss",
+    "Palak Paneer"
+  ],
+  "itemPhotos": {
+    "Caffè Latte": "/menu/hot-coffee.webp",
+    "Cranberry Mojito": "/menu/coolers.webp",
+    "Rose Lemonade": "/menu/rose-lemonade.webp",
+    "Dragon Sushi": "/menu/sushi.webp",
+    "Nachos Mexicana": "/menu/mexican.webp",
+    "Chilli Cheese Toast": "/menu/toasts.webp",
+    "Volcano Cheese Burger": "/menu/burgers.webp",
+    "Affogato Bliss": "/menu/affogato.webp",
+    "Caprese Salad": "/menu/caprese.webp",
+    "Greek Salad": "/menu/salads.webp",
+    "Hummus Bowl": "/menu/lebanese.webp",
+    "Tomato Basil Soup": "/menu/soups.webp",
+    "Hakka Noodles": "/menu/oriental.webp",
+    "Palak Paneer": "/menu/paneer.webp",
+    "Veg Biryani": "/menu/rice.webp",
+    "Tandoori Naan Butter": "/menu/breads.webp",
+    "Onion Salad": "/menu/indian-salads.webp",
+    "Plain Papad": "/menu/papad.webp",
+    "Iced Americano": "/menu/iced-coffee.webp",
+    "Espresso Shot": "/menu/shots.webp",
+    "Chocolate Shake": "/menu/thick-shakes.webp",
+    "Classic Veg Fries": "/menu/french-fries.webp",
+    "Mocha Crunch Shake": "/menu/coffee-shakes.webp"
   },
   "categories": [
-    { "name": "Hot Coffee", "groups": ["shot", "syrup", "milk", "topping"], "items": [
-      ["Espresso", 80, "Strong, rich coffee shot", ["espresso"]],
-      ["Macchiato", 185, "Espresso with a hint of milk"],
-      ["Americano", 165, "Smooth diluted espresso"],
-      ["Cappuccino", 190, "Espresso with creamy foam"],
-      ["Caffè Latte", 210, "Espresso with steamed milk"],
-      ["Flat White", 210, "Velvety espresso with micro-foam"],
-      ["Mocha", 265, "Espresso blended with chocolate"],
-      ["Biscoff Latte", 255, "Latte with Biscoff flavour"],
-      ["Caramel Latte", 240, "Latte with caramel sweetness"],
-      ["Tiramisu Latte", 245, "Latte with tiramisu essence"],
-      ["Matcha Latte", 265, "Creamy Japanese green tea latte"],
-      ["Nutella Latte", 265, "Latte infused with Nutella flavour"],
-      ["Hazelnut Latte", 245, "Smooth espresso & creamy hazelnut flavour"]
-    ]},
-    { "name": "Iced Coffee", "groups": ["shot", "syrup", "milk"], "items": [
-      ["Iced Americano", 135, "Bold espresso over ice, crisp & refreshing"],
-      ["Iced Latte", 185, "Espresso with cold milk, light & creamy"],
-      ["Iced Mocha", 210, "Chocolate & coffee over ice, sweet & rich"]
-    ]},
-    { "name": "Signature Coffee", "groups": ["syrup", "topping"], "items": [
-      ["Classic Cold Brew", 160, "Nutty, caramel-rich espresso"],
-      ["Saffron Pistachio Latte", 260, "Luxury blend with saffron & pistachio"],
-      ["Coconut Cold Brew", 195, "Silky cold brew with a twist of coconut"],
-      ["Affogato Bliss", 185, "Creamy & light"],
-      ["Vietnamese Cold Brew", 155, "Smooth cold brew sweetened with rich condensed milk"]
-    ]},
-    { "name": "Frappe", "groups": ["shot", "syrup", "milk", "topping", "scoop"], "items": [
-      ["Brownie Frappe", 275, "Rich chocolate blend with brownie chunks"],
-      ["Butterscotch Frappe", 225, "Creamy caramelised butterscotch delight"],
-      ["Strawberry Frappe", 225, "Fresh, fruity and perfectly sweet"],
-      ["Biscoff Frappe", 265, "Spiced biscuit flavour with creamy coffee"],
-      ["Berry Mocha Frappe", 285, "Mocha infused with a mixed berries twist"],
-      ["Rose Vanilla Frappe", 275, "Floral rose meets smooth vanilla"],
-      ["Caramel Frappe", 275, "Classic sweet caramel blended to perfection"],
-      ["Matcha Frappe", 285, "Earthy matcha with a creamy finish"],
-      ["Tiramisu Frappe", 275, "Coffee, cocoa and cream inspired by the classic dessert"],
-      ["Nutella Frappe", 285, "Creamy coffee frappe with Nutella"],
-      ["Classic Frappe", 185, "Frothy coffee blend, cool and energising"]
-    ]},
-    { "name": "Coffee Coolers", "items": [
-      ["Cold Brew Tonic", 210, "Cold brew topped with fizzy tonic for a zesty twist"],
-      ["Mocha Mint Cooler", 190, "Chocolate & mint fused with chilled coffee"],
-      ["Affogato Float", 155, "Espresso & vanilla ice cream delight"],
-      ["Iced Orange Coffee", 225, "Espresso with fresh orange zest & juice"],
-      ["Coffee Mojito", 255, "Coffee, mint & lime for a cool, tangy sip"],
-      ["Bull's Eye", 325, "Espresso with Red Bull for a bold kick"]
-    ]},
-    { "name": "Coffee Shakes", "groups": ["topping", "scoop"], "items": [
-      ["Coffee Caramel Shake", 265, "Cold coffee meets creamy caramel"],
-      ["Mocha Crunch Shake", 285, "Chocolate & espresso blended with ice cream"],
-      ["Tiramisu Shake", 275, "Italian dessert turned into a shake"],
-      ["Hazelnut Praline Shake", 275, "Nutty, indulgent, with roasted praline bits"],
-      ["Hazelnut Tiramisu Shake", 310, "A rich dessert-style coffee shake"]
-    ]},
-    { "name": "Shots", "items": [
-      ["Espresso Shot", 80, "Pure, strong & intense"],
-      ["Hazelnut Shot", 110, "Nutty sweetness kick"],
-      ["Caramel Shot", 110, "Smooth & indulgent"],
-      ["Vanilla Shot", 110, "Creamy & light"],
-      ["Irish Cream Shot", 125, "Non-alcoholic, silky & rich"],
-      ["Mocha Shot", 145, "Mini chocolate espresso"],
-      ["Cranberry Shot", 110, "Tangy, refreshing burst of cranberry flavour"]
-    ]},
-    { "name": "Thick Shakes", "groups": ["topping", "scoop"], "items": [
-      ["Chocolate Shake", 245], ["Vanilla Shake", 245], ["Strawberry Shake", 245], ["Butterscotch Shake", 255],
-      ["Nutella Shake", 275], ["Biscoff Shake", 285], ["Brownie Shake", 285], ["Oreo Shake", 295],
-      ["KitKat Shake", 295], ["Ferrero Rocher Shake", 325], ["Banana Caramel Shake", 285], ["Lychee Shake", 275],
-      ["Berry Blast Shake", 265], ["Tender Coconut Shake", 285], ["Tiramisu Thick Shake", 285], ["Nutella Hazelnut Shake", 265],
-      ["Brownie Fudge Shake", 295], ["Strawberry Cheesecake Shake", 325], ["Blueberry Lavender Shake", 325], ["Lychee Rose Shake", 285],
-      ["Mango Almond Bliss", 285], ["Berry Biscoff Shake", 285], ["Hot Bournvita Brownie Shake", 285], ["Bournvita Shake", 275],
-      ["Tiramisu Hot Chocolate", 355], ["Hazelnut Hot Chocolate", 345], ["Biscoff Hot Chocolate", 355], ["Sea Salt Hot Chocolate", 385]
-    ]},
-    { "name": "Coolers", "items": [
-      ["Classic Lemon Iced Tea", 125], ["Peach Iced Tea", 135], ["Watermelon Cooler", 125], ["Mint Mojito", 165],
-      ["Peach Mojito", 175], ["Lavender Mojito", 185], ["Cranberry Mojito", 165], ["Berry Blast Cooler", 165],
-      ["Lychee Basil Sparkle", 185], ["Black Dragon", 185], ["Martini Punch", 165], ["Blackcurrant Sparkler", 165],
-      ["Bubblegum Spritzer", 165], ["Green Apple Spritzer", 185], ["Cucumber Basil Cooler", 155], ["Rose Lemonade", 195],
-      ["Spicy Guava", 165], ["Pinacolada", 225], ["Cosmopolitan", 225], ["Bull's Mint Blast", 225],
-      ["Sweet Lime Soda", 125], ["Salted Lime Soda", 125], ["Masala Cold Drink", 125], ["Butter Milk", 85]
-    ]},
-    { "name": "Toasts", "items": [
-      ["Chilli Cheese Toast", 285, "Mozzarella, cheddar, bell peppers & green chilli on toasted bread"],
-      ["Pesto Avocado Toast", 359, "Creamy avocado with basil pesto"],
-      ["Avocado Feta Toast", 375, "Smashed avocado topped with feta & microgreens"],
-      ["Roasted Hummus Toast", 329, "Sourdough with hummus, cherry tomatoes & sesame seeds"],
-      ["Spinach Ricotta Mushroom Toast", 389, "Sautéed spinach & mushrooms with ricotta"],
-      ["Pesto Tomato Bruschetta", 289, "Toasted bread with pesto, basil & cherry tomatoes"],
-      ["Avocado Balsamic Tartines", 329, "Open-faced toast with avocado & balsamic glaze"],
-      ["Sundried Tomato Avocado Toast", 299, "Avocado with sundried tomatoes on artisan bread"],
-      ["Mushroom Garlic Toast", 275, "Garlic-sautéed mushrooms on golden toast"]
-    ]},
-    { "name": "Sandwiches", "items": [
-      ["Grilled Cheese Sandwich", 279, "Golden toasted bread with melted cheese"],
-      ["Pesto Veggie Sandwich", 269, "Veggies with basil pesto on toasted bread"],
-      ["Vegetable Club Sandwich", 275, "Triple-layered veggies, cheese & house sauce"],
-      ["Pesto Mozzarella Sandwich", 329, "Fresh mozzarella, tomato and basil pesto"],
-      ["Mediterranean Hummus Sandwich", 290, "Hummus, olives, cucumber & sun-dried tomatoes"]
-    ]},
-    { "name": "Burgers", "items": [
-      ["Veg Burger", 255, "Classic veggie patty with tomato, lettuce and house sauce"],
-      ["Mexican Burger", 285, "Spicy beans patty with jalapeños, salsa and cheese"],
-      ["Cottage Cheese Tikka Burger", 289, "Indian spiced cottage cheese tikka patty with mayo"],
-      ["Volcano Cheese Burger", 339, "A spicy, cheesy burger loaded with molten cheese and fiery flavour"]
-    ]},
-    { "name": "Pastas", "groups": ["veggies"], "items": [
-      ["Build Your Own Pasta", 450, "Pick your sauce and veggies. Served with garlic bread", ["sauce", "veggies"]],
-      ["Chilli Garlic Butter Spaghetti", 399, "Spaghetti tossed in rich garlic butter and spicy chilli oil for a bold, flavourful kick"],
-      ["Aglio Olio", 379, "Classic Italian pasta tossed with garlic, olive oil, chilli flakes and herbs"],
-      ["Ravioli Pasta", 429, "Stuffed pasta pockets served with rich sauce and herbs"]
-    ]},
-    { "name": "French Fries", "items": [
-      ["Classic Veg Fries", 179, "Crispy golden fries, lightly salted"],
-      ["Cheesy Garlic Fries", 249, "In garlic butter & melted cheese"],
-      ["Herb & Parmesan Fries", 279, "Fries with herbs & parmesan sprinkle"],
-      ["Spicy Cajun Fries", 199, "Bold, zesty Cajun-seasoned fries"],
-      ["Masala Fries", 165, "Indian-style spiced fries with tangy chutney"],
-      ["Chilli Cheese Fries", 319, "Tossed in spicy veg chilli & melted cheese"],
-      ["Peri Peri Fries", 229, "Crispy fries tossed in tangy and spicy peri-peri seasoning"]
-    ]},
-    { "name": "Salads", "items": [
-      ["Watermelon & Feta Salad", 280, "Juicy watermelon, feta, walnuts & basil with balsamic dressing"],
-      ["Gado Gado Salad", 255, "Indonesian veggies and tofu with creamy peanut dressing"],
-      ["California Salad", 359, "Avocado, fresh veggies, feta, walnuts & cranberries with garlic-rosemary dressing"],
-      ["Caesar Salad", 299, "Classic romaine, parmesan, croutons & creamy Caesar dressing"],
-      ["Caprese Salad", 319, "Fresh tomato, mozzarella & basil with balsamic glaze"],
-      ["Greek Salad", 280, "Tomatoes, cucumber, olives, red onion & feta with oregano dressing"]
-    ]},
-    { "name": "Mexican", "items": [
-      ["Quesadilla", 349, "Grilled tortilla stuffed with cheese, veggies and spices"],
-      ["Burrito Bowl", 480, "A bowl of rice, beans, veggies and toppings inspired by a burrito"],
-      ["Nachos Mexicana", 379, "Crispy nachos topped with beans, cheese, salsa and jalapeños"],
-      ["Mexican Hot Pot", 450, "Spicy Mexican rice bowl with beans, veggies and melted cheese"]
-    ]},
-    { "name": "Lebanese", "items": [
-      ["Hummus Bowl", 349, "Creamy hummus served with fresh veggies, pita and toppings"],
-      ["Labneh Crackers", 480, "Creamy labneh served with crisp seasoned crackers"],
-      ["Falafel Bites", 379, "Crispy chickpea balls served with creamy dip"]
-    ]},
-    { "name": "Sushi", "items": [
-      ["Tempura Sushi", 349, "Crispy tempura-filled sushi rolls with savoury seasoning"],
-      ["Uramaki Sushi", 349, "Inside-out rolls with rice outside and flavourful fillings inside"],
-      ["Dragon Sushi", 349, "Bold & spicy roll with layered toppings and creamy sauce"],
-      ["Avocado Sushi", 359, "Fresh rolls with smooth avocado and light seasoning"]
-    ]},
-    { "name": "Dim Sum", "items": [
-      ["Cheese Corn Dim Sum", 329, "Soft dumplings filled with creamy cheese & sweet corn"],
-      ["Exotic Veg Dim Sum", 329, "Steamed dim sums packed with mixed seasonal vegetables"],
-      ["Shiitake Mushroom Dim Sum", 349, "Savoury dumplings stuffed with shiitake mushrooms & herbs"],
-      ["Assorted Dim Sum", 359, "Cheese Corn, Exotic Veg and Shiitake Mushroom dim sums"]
-    ]},
-    { "name": "Soups", "items": [
-      ["Roasted Bell Pepper Soup", 249], ["Burnt Garlic Broccoli Soup", 249], ["Hot & Sour Soup", 249],
-      ["Manchow Soup", 249], ["Lemon Coriander Soup", 249], ["Sweet Corn Soup", 249], ["Tomato Basil Soup", 229]
-    ]},
-    { "name": "Oriental", "items": [
-      ["Pepper Corn Crisp", 379], ["Paneer Chilli", 359], ["Mushroom Chilli", 379], ["Manchurian", 359],
-      ["Dragon Paneer", 379], ["Hakka Noodles", 329], ["Schezwan Noodles", 339], ["Chilli Garlic Noodles", 339],
-      ["Chinese Bhel", 329], ["Stir-Fried Veg in Garlic Sauce", 329], ["Broccoli Mushroom in Hunan Sauce", 359],
-      ["Crispy Corn Salt & Pepper", 299], ["Honey Chilli Potatoes", 299]
-    ]},
-    { "name": "Appetizers", "items": [
-      ["Cheese Corn Kebab", 289], ["Dahi Kebab", 299], ["Veg Seekh Kebab", 289], ["Hara Bhara Kebab", 289],
-      ["Beetroot Thecha Kebab", 299], ["Malai Broccoli", 339], ["Paneer Tikka", 299], ["Malai Paneer Tikka", 309],
-      ["Lehsuni Paneer Tikka", 309], ["Aachari Paneer Tikka", 309], ["Pahadi Tikka", 329], ["Paneer Banarasi Tikka", 329],
-      ["Paneer Thecha Tikka", 329], ["Mushroom Tikka", 339], ["Mushroom Multani Tikka", 359], ["Tandoori Thecha Aloo", 289],
-      ["Tandoori Pineapple", 299], ["Dal Makhani Shots", 359]
-    ]},
-    { "name": "Veg Main Course", "items": [
-      ["Palak Lehsuni", 289], ["Palak Corn", 299], ["Mix Veg", 299], ["Veg Diwani Handi", 329],
-      ["Veg Bhuna Masala", 329], ["Veg Angara", 339], ["Veg Kolhapuri", 299], ["Methi Matar Malai", 339],
-      ["Shahi Malai Kofta", 359], ["Rajasthani Kofta", 359], ["Kaju Masala", 369], ["Kaju Matar Malai", 379],
-      ["Stuffed Tomato Masala", 359], ["Aloo Jeera", 289], ["Aloo Dum Punjabi", 329], ["Tawa Mushroom", 339],
-      ["Mushroom Masala", 339], ["Chana Masala", 329], ["Bhindi Masala", 289], ["Bhindi Dry", 279],
-      ["Kurkuri Bhindi", 289], ["Makai Masala", 329], ["Sev Tamatar", 289], ["Sev Bhaji", 299]
-    ]},
-    { "name": "Paneer Main Course", "items": [
-      ["Paneer Bulbul", 359], ["Paneer Akbari", 379], ["Paneer Angara", 339], ["Paneer Patiala", 349],
-      ["Palak Paneer", 329], ["Paneer Do Pyaaza", 339], ["Paneer Tikka Masala", 359], ["Paneer Tikka Lababdar", 359],
-      ["Paneer Lababdar", 339], ["Paneer Butter Masala", 339], ["Paneer Chatpata", 339], ["Kadhai Paneer", 339],
-      ["Paneer Pasanda", 339], ["Shahi Paneer", 359], ["Paneer Kolhapuri", 339], ["Paneer Kaju Masala", 389]
-    ]},
-    { "name": "Dal", "items": [
-      ["Plain Dal", 289], ["Dal Fry", 319], ["Dal Tadka", 329], ["Dal Makhani", 359], ["Dal Mughlai", 339], ["Snack Dal with Papad", 359]
-    ]},
-    { "name": "Rice", "items": [
-      ["Plain Rice", 279], ["Jeera Rice", 289], ["Onion Jeera Rice", 299], ["Green Peas Pulao", 299],
-      ["Tomato Onion Rice", 319], ["Curd Rice", 299], ["Masala Rice", 319], ["Lemon Rice", 319],
-      ["Veg Pulao", 329], ["Paneer Pulao", 339], ["Tawa Pulao", 339], ["Veg Biryani", 339], ["Hyderabadi Biryani", 349]
-    ]},
-    { "name": "Breads", "items": [
-      ["Tandoori Roti Plain", 45], ["Tandoori Roti Butter", 55], ["Tandoori Naan Plain", 55], ["Tandoori Naan Butter", 65],
-      ["Garlic Naan", 65], ["Cheese Garlic Naan", 95], ["Mix Veg Kulcha", 75], ["Thecha Aloo Kulcha", 85],
-      ["Cheese Corn Kulcha", 95], ["Paneer Kulcha", 95], ["Lacha Paratha", 65], ["Missi Roti", 75],
-      ["Choice of Paratha", 125, "Aloo, Paneer, Gobhi or Aachari", ["paratha"]]
-    ]},
-    { "name": "Curd & Raita", "items": [
-      ["Plain Curd", 89], ["Boondi Raita", 139], ["Veg Raita", 129], ["Pineapple Raita", 159]
-    ]},
-    { "name": "Indian Salads", "items": [
-      ["Green Salad", 139], ["Onion Salad", 129], ["Kachumbar Salad", 129], ["Peanut Salad", 239], ["Chana Roast", 239], ["Bhungara Pyaaz", 259]
-    ]},
-    { "name": "Papad & Sides", "items": [
-      ["Plain Papad", 49], ["Masala Papad", 89], ["Chane Ka Papad", 59], ["Ghee Khichiya", 89],
-      ["Masala Khichiya", 129], ["Papad Churi", 159], ["Baghari Sev", 219]
-    ]}
+    {
+      "name": "Hot Coffee",
+      "groups": [
+        "shot",
+        "syrup",
+        "milk",
+        "topping"
+      ],
+      "items": [
+        [
+          "Espresso",
+          80,
+          "Strong, rich coffee shot",
+          [
+            "espresso"
+          ]
+        ],
+        [
+          "Macchiato",
+          185,
+          "Espresso with a hint of milk"
+        ],
+        [
+          "Americano",
+          165,
+          "Smooth diluted espresso"
+        ],
+        [
+          "Cappuccino",
+          190,
+          "Espresso with creamy foam"
+        ],
+        [
+          "Caffè Latte",
+          210,
+          "Espresso with steamed milk"
+        ],
+        [
+          "Flat White",
+          210,
+          "Velvety espresso with micro-foam"
+        ],
+        [
+          "Mocha",
+          265,
+          "Espresso blended with chocolate"
+        ],
+        [
+          "Biscoff Latte",
+          255,
+          "Latte with Biscoff flavour"
+        ],
+        [
+          "Caramel Latte",
+          240,
+          "Latte with caramel sweetness"
+        ],
+        [
+          "Tiramisu Latte",
+          245,
+          "Latte with tiramisu essence"
+        ],
+        [
+          "Matcha Latte",
+          265,
+          "Creamy Japanese green tea latte"
+        ],
+        [
+          "Nutella Latte",
+          265,
+          "Latte infused with Nutella flavour"
+        ],
+        [
+          "Hazelnut Latte",
+          245,
+          "Smooth espresso & creamy hazelnut flavour"
+        ]
+      ],
+      "image": "/menu/hot-coffee.webp"
+    },
+    {
+      "name": "Iced Coffee",
+      "groups": [
+        "shot",
+        "syrup",
+        "milk"
+      ],
+      "items": [
+        [
+          "Iced Americano",
+          135,
+          "Bold espresso over ice, crisp & refreshing"
+        ],
+        [
+          "Iced Latte",
+          185,
+          "Espresso with cold milk, light & creamy"
+        ],
+        [
+          "Iced Mocha",
+          210,
+          "Chocolate & coffee over ice, sweet & rich"
+        ]
+      ],
+      "image": "/menu/iced-coffee.webp"
+    },
+    {
+      "name": "Signature Coffee",
+      "groups": [
+        "syrup",
+        "topping"
+      ],
+      "items": [
+        [
+          "Classic Cold Brew",
+          160,
+          "Nutty, caramel-rich espresso"
+        ],
+        [
+          "Saffron Pistachio Latte",
+          260,
+          "Luxury blend with saffron & pistachio"
+        ],
+        [
+          "Coconut Cold Brew",
+          195,
+          "Silky cold brew with a twist of coconut"
+        ],
+        [
+          "Affogato Bliss",
+          185,
+          "Creamy & light"
+        ],
+        [
+          "Vietnamese Cold Brew",
+          155,
+          "Smooth cold brew sweetened with rich condensed milk"
+        ]
+      ],
+      "image": "/menu/signature-coffee.webp"
+    },
+    {
+      "name": "Frappe",
+      "groups": [
+        "shot",
+        "syrup",
+        "milk",
+        "topping",
+        "scoop"
+      ],
+      "items": [
+        [
+          "Brownie Frappe",
+          275,
+          "Rich chocolate blend with brownie chunks"
+        ],
+        [
+          "Butterscotch Frappe",
+          225,
+          "Creamy caramelised butterscotch delight"
+        ],
+        [
+          "Strawberry Frappe",
+          225,
+          "Fresh, fruity and perfectly sweet"
+        ],
+        [
+          "Biscoff Frappe",
+          265,
+          "Spiced biscuit flavour with creamy coffee"
+        ],
+        [
+          "Berry Mocha Frappe",
+          285,
+          "Mocha infused with a mixed berries twist"
+        ],
+        [
+          "Rose Vanilla Frappe",
+          275,
+          "Floral rose meets smooth vanilla"
+        ],
+        [
+          "Caramel Frappe",
+          275,
+          "Classic sweet caramel blended to perfection"
+        ],
+        [
+          "Matcha Frappe",
+          285,
+          "Earthy matcha with a creamy finish"
+        ],
+        [
+          "Tiramisu Frappe",
+          275,
+          "Coffee, cocoa and cream inspired by the classic dessert"
+        ],
+        [
+          "Nutella Frappe",
+          285,
+          "Creamy coffee frappe with Nutella"
+        ],
+        [
+          "Classic Frappe",
+          185,
+          "Frothy coffee blend, cool and energising"
+        ]
+      ],
+      "image": "/menu/frappe.webp"
+    },
+    {
+      "name": "Coffee Coolers",
+      "items": [
+        [
+          "Cold Brew Tonic",
+          210,
+          "Cold brew topped with fizzy tonic for a zesty twist"
+        ],
+        [
+          "Mocha Mint Cooler",
+          190,
+          "Chocolate & mint fused with chilled coffee"
+        ],
+        [
+          "Affogato Float",
+          155,
+          "Espresso & vanilla ice cream delight"
+        ],
+        [
+          "Iced Orange Coffee",
+          225,
+          "Espresso with fresh orange zest & juice"
+        ],
+        [
+          "Coffee Mojito",
+          255,
+          "Coffee, mint & lime for a cool, tangy sip"
+        ],
+        [
+          "Bull's Eye",
+          325,
+          "Espresso with Red Bull for a bold kick"
+        ]
+      ],
+      "image": "/menu/coffee-coolers.webp"
+    },
+    {
+      "name": "Coffee Shakes",
+      "groups": [
+        "topping",
+        "scoop"
+      ],
+      "items": [
+        [
+          "Coffee Caramel Shake",
+          265,
+          "Cold coffee meets creamy caramel"
+        ],
+        [
+          "Mocha Crunch Shake",
+          285,
+          "Chocolate & espresso blended with ice cream"
+        ],
+        [
+          "Tiramisu Shake",
+          275,
+          "Italian dessert turned into a shake"
+        ],
+        [
+          "Hazelnut Praline Shake",
+          275,
+          "Nutty, indulgent, with roasted praline bits"
+        ],
+        [
+          "Hazelnut Tiramisu Shake",
+          310,
+          "A rich dessert-style coffee shake"
+        ]
+      ],
+      "image": "/menu/coffee-shakes.webp"
+    },
+    {
+      "name": "Shots",
+      "items": [
+        [
+          "Espresso Shot",
+          80,
+          "Pure, strong & intense"
+        ],
+        [
+          "Hazelnut Shot",
+          110,
+          "Nutty sweetness kick"
+        ],
+        [
+          "Caramel Shot",
+          110,
+          "Smooth & indulgent"
+        ],
+        [
+          "Vanilla Shot",
+          110,
+          "Creamy & light"
+        ],
+        [
+          "Irish Cream Shot",
+          125,
+          "Non-alcoholic, silky & rich"
+        ],
+        [
+          "Mocha Shot",
+          145,
+          "Mini chocolate espresso"
+        ],
+        [
+          "Cranberry Shot",
+          110,
+          "Tangy, refreshing burst of cranberry flavour"
+        ]
+      ],
+      "image": "/menu/shots.webp"
+    },
+    {
+      "name": "Thick Shakes",
+      "groups": [
+        "topping",
+        "scoop"
+      ],
+      "items": [
+        [
+          "Chocolate Shake",
+          245
+        ],
+        [
+          "Vanilla Shake",
+          245
+        ],
+        [
+          "Strawberry Shake",
+          245
+        ],
+        [
+          "Butterscotch Shake",
+          255
+        ],
+        [
+          "Nutella Shake",
+          275
+        ],
+        [
+          "Biscoff Shake",
+          285
+        ],
+        [
+          "Brownie Shake",
+          285
+        ],
+        [
+          "Oreo Shake",
+          295
+        ],
+        [
+          "KitKat Shake",
+          295
+        ],
+        [
+          "Ferrero Rocher Shake",
+          325
+        ],
+        [
+          "Banana Caramel Shake",
+          285
+        ],
+        [
+          "Lychee Shake",
+          275
+        ],
+        [
+          "Berry Blast Shake",
+          265
+        ],
+        [
+          "Tender Coconut Shake",
+          285
+        ],
+        [
+          "Tiramisu Thick Shake",
+          285
+        ],
+        [
+          "Nutella Hazelnut Shake",
+          265
+        ],
+        [
+          "Brownie Fudge Shake",
+          295
+        ],
+        [
+          "Strawberry Cheesecake Shake",
+          325
+        ],
+        [
+          "Blueberry Lavender Shake",
+          325
+        ],
+        [
+          "Lychee Rose Shake",
+          285
+        ],
+        [
+          "Mango Almond Bliss",
+          285
+        ],
+        [
+          "Berry Biscoff Shake",
+          285
+        ],
+        [
+          "Hot Bournvita Brownie Shake",
+          285
+        ],
+        [
+          "Bournvita Shake",
+          275
+        ],
+        [
+          "Tiramisu Hot Chocolate",
+          355
+        ],
+        [
+          "Hazelnut Hot Chocolate",
+          345
+        ],
+        [
+          "Biscoff Hot Chocolate",
+          355
+        ],
+        [
+          "Sea Salt Hot Chocolate",
+          385
+        ]
+      ],
+      "image": "/menu/thick-shakes.webp"
+    },
+    {
+      "name": "Coolers",
+      "items": [
+        [
+          "Classic Lemon Iced Tea",
+          125
+        ],
+        [
+          "Peach Iced Tea",
+          135
+        ],
+        [
+          "Watermelon Cooler",
+          125
+        ],
+        [
+          "Mint Mojito",
+          165
+        ],
+        [
+          "Peach Mojito",
+          175
+        ],
+        [
+          "Lavender Mojito",
+          185
+        ],
+        [
+          "Cranberry Mojito",
+          165
+        ],
+        [
+          "Berry Blast Cooler",
+          165
+        ],
+        [
+          "Lychee Basil Sparkle",
+          185
+        ],
+        [
+          "Black Dragon",
+          185
+        ],
+        [
+          "Martini Punch",
+          165
+        ],
+        [
+          "Blackcurrant Sparkler",
+          165
+        ],
+        [
+          "Bubblegum Spritzer",
+          165
+        ],
+        [
+          "Green Apple Spritzer",
+          185
+        ],
+        [
+          "Cucumber Basil Cooler",
+          155
+        ],
+        [
+          "Rose Lemonade",
+          195
+        ],
+        [
+          "Spicy Guava",
+          165
+        ],
+        [
+          "Pinacolada",
+          225
+        ],
+        [
+          "Cosmopolitan",
+          225
+        ],
+        [
+          "Bull's Mint Blast",
+          225
+        ],
+        [
+          "Sweet Lime Soda",
+          125
+        ],
+        [
+          "Salted Lime Soda",
+          125
+        ],
+        [
+          "Masala Cold Drink",
+          125
+        ],
+        [
+          "Butter Milk",
+          85
+        ]
+      ],
+      "image": "/menu/coolers.webp"
+    },
+    {
+      "name": "Toasts",
+      "items": [
+        [
+          "Chilli Cheese Toast",
+          285,
+          "Mozzarella, cheddar, bell peppers & green chilli on toasted bread"
+        ],
+        [
+          "Pesto Avocado Toast",
+          359,
+          "Creamy avocado with basil pesto"
+        ],
+        [
+          "Avocado Feta Toast",
+          375,
+          "Smashed avocado topped with feta & microgreens"
+        ],
+        [
+          "Roasted Hummus Toast",
+          329,
+          "Sourdough with hummus, cherry tomatoes & sesame seeds"
+        ],
+        [
+          "Spinach Ricotta Mushroom Toast",
+          389,
+          "Sautéed spinach & mushrooms with ricotta"
+        ],
+        [
+          "Pesto Tomato Bruschetta",
+          289,
+          "Toasted bread with pesto, basil & cherry tomatoes"
+        ],
+        [
+          "Avocado Balsamic Tartines",
+          329,
+          "Open-faced toast with avocado & balsamic glaze"
+        ],
+        [
+          "Sundried Tomato Avocado Toast",
+          299,
+          "Avocado with sundried tomatoes on artisan bread"
+        ],
+        [
+          "Mushroom Garlic Toast",
+          275,
+          "Garlic-sautéed mushrooms on golden toast"
+        ]
+      ],
+      "image": "/menu/toasts.webp"
+    },
+    {
+      "name": "Sandwiches",
+      "items": [
+        [
+          "Grilled Cheese Sandwich",
+          279,
+          "Golden toasted bread with melted cheese"
+        ],
+        [
+          "Pesto Veggie Sandwich",
+          269,
+          "Veggies with basil pesto on toasted bread"
+        ],
+        [
+          "Vegetable Club Sandwich",
+          275,
+          "Triple-layered veggies, cheese & house sauce"
+        ],
+        [
+          "Pesto Mozzarella Sandwich",
+          329,
+          "Fresh mozzarella, tomato and basil pesto"
+        ],
+        [
+          "Mediterranean Hummus Sandwich",
+          290,
+          "Hummus, olives, cucumber & sun-dried tomatoes"
+        ]
+      ],
+      "image": "/menu/sandwiches.webp"
+    },
+    {
+      "name": "Burgers",
+      "items": [
+        [
+          "Veg Burger",
+          255,
+          "Classic veggie patty with tomato, lettuce and house sauce"
+        ],
+        [
+          "Mexican Burger",
+          285,
+          "Spicy beans patty with jalapeños, salsa and cheese"
+        ],
+        [
+          "Cottage Cheese Tikka Burger",
+          289,
+          "Indian spiced cottage cheese tikka patty with mayo"
+        ],
+        [
+          "Volcano Cheese Burger",
+          339,
+          "A spicy, cheesy burger loaded with molten cheese and fiery flavour"
+        ]
+      ],
+      "image": "/menu/burgers.webp"
+    },
+    {
+      "name": "Pastas",
+      "groups": [
+        "veggies"
+      ],
+      "items": [
+        [
+          "Build Your Own Pasta",
+          450,
+          "Pick your sauce and veggies. Served with garlic bread",
+          [
+            "sauce",
+            "veggies"
+          ]
+        ],
+        [
+          "Chilli Garlic Butter Spaghetti",
+          399,
+          "Spaghetti tossed in rich garlic butter and spicy chilli oil for a bold, flavourful kick"
+        ],
+        [
+          "Aglio Olio",
+          379,
+          "Classic Italian pasta tossed with garlic, olive oil, chilli flakes and herbs"
+        ],
+        [
+          "Ravioli Pasta",
+          429,
+          "Stuffed pasta pockets served with rich sauce and herbs"
+        ]
+      ],
+      "image": "/menu/pastas.webp"
+    },
+    {
+      "name": "French Fries",
+      "items": [
+        [
+          "Classic Veg Fries",
+          179,
+          "Crispy golden fries, lightly salted"
+        ],
+        [
+          "Cheesy Garlic Fries",
+          249,
+          "In garlic butter & melted cheese"
+        ],
+        [
+          "Herb & Parmesan Fries",
+          279,
+          "Fries with herbs & parmesan sprinkle"
+        ],
+        [
+          "Spicy Cajun Fries",
+          199,
+          "Bold, zesty Cajun-seasoned fries"
+        ],
+        [
+          "Masala Fries",
+          165,
+          "Indian-style spiced fries with tangy chutney"
+        ],
+        [
+          "Chilli Cheese Fries",
+          319,
+          "Tossed in spicy veg chilli & melted cheese"
+        ],
+        [
+          "Peri Peri Fries",
+          229,
+          "Crispy fries tossed in tangy and spicy peri-peri seasoning"
+        ]
+      ],
+      "image": "/menu/french-fries.webp"
+    },
+    {
+      "name": "Salads",
+      "items": [
+        [
+          "Watermelon & Feta Salad",
+          280,
+          "Juicy watermelon, feta, walnuts & basil with balsamic dressing"
+        ],
+        [
+          "Gado Gado Salad",
+          255,
+          "Indonesian veggies and tofu with creamy peanut dressing"
+        ],
+        [
+          "California Salad",
+          359,
+          "Avocado, fresh veggies, feta, walnuts & cranberries with garlic-rosemary dressing"
+        ],
+        [
+          "Caesar Salad",
+          299,
+          "Classic romaine, parmesan, croutons & creamy Caesar dressing"
+        ],
+        [
+          "Caprese Salad",
+          319,
+          "Fresh tomato, mozzarella & basil with balsamic glaze"
+        ],
+        [
+          "Greek Salad",
+          280,
+          "Tomatoes, cucumber, olives, red onion & feta with oregano dressing"
+        ]
+      ],
+      "image": "/menu/salads.webp"
+    },
+    {
+      "name": "Mexican",
+      "items": [
+        [
+          "Quesadilla",
+          349,
+          "Grilled tortilla stuffed with cheese, veggies and spices"
+        ],
+        [
+          "Burrito Bowl",
+          480,
+          "A bowl of rice, beans, veggies and toppings inspired by a burrito"
+        ],
+        [
+          "Nachos Mexicana",
+          379,
+          "Crispy nachos topped with beans, cheese, salsa and jalapeños"
+        ],
+        [
+          "Mexican Hot Pot",
+          450,
+          "Spicy Mexican rice bowl with beans, veggies and melted cheese"
+        ]
+      ],
+      "image": "/menu/mexican.webp"
+    },
+    {
+      "name": "Lebanese",
+      "items": [
+        [
+          "Hummus Bowl",
+          349,
+          "Creamy hummus served with fresh veggies, pita and toppings"
+        ],
+        [
+          "Labneh Crackers",
+          480,
+          "Creamy labneh served with crisp seasoned crackers"
+        ],
+        [
+          "Falafel Bites",
+          379,
+          "Crispy chickpea balls served with creamy dip"
+        ]
+      ],
+      "image": "/menu/lebanese.webp"
+    },
+    {
+      "name": "Sushi",
+      "items": [
+        [
+          "Tempura Sushi",
+          349,
+          "Crispy tempura-filled sushi rolls with savoury seasoning"
+        ],
+        [
+          "Uramaki Sushi",
+          349,
+          "Inside-out rolls with rice outside and flavourful fillings inside"
+        ],
+        [
+          "Dragon Sushi",
+          349,
+          "Bold & spicy roll with layered toppings and creamy sauce"
+        ],
+        [
+          "Avocado Sushi",
+          359,
+          "Fresh rolls with smooth avocado and light seasoning"
+        ]
+      ],
+      "image": "/menu/sushi.webp"
+    },
+    {
+      "name": "Dim Sum",
+      "items": [
+        [
+          "Cheese Corn Dim Sum",
+          329,
+          "Soft dumplings filled with creamy cheese & sweet corn"
+        ],
+        [
+          "Exotic Veg Dim Sum",
+          329,
+          "Steamed dim sums packed with mixed seasonal vegetables"
+        ],
+        [
+          "Shiitake Mushroom Dim Sum",
+          349,
+          "Savoury dumplings stuffed with shiitake mushrooms & herbs"
+        ],
+        [
+          "Assorted Dim Sum",
+          359,
+          "Cheese Corn, Exotic Veg and Shiitake Mushroom dim sums"
+        ]
+      ],
+      "image": "/menu/dim-sum.webp"
+    },
+    {
+      "name": "Soups",
+      "items": [
+        [
+          "Roasted Bell Pepper Soup",
+          249
+        ],
+        [
+          "Burnt Garlic Broccoli Soup",
+          249
+        ],
+        [
+          "Hot & Sour Soup",
+          249
+        ],
+        [
+          "Manchow Soup",
+          249
+        ],
+        [
+          "Lemon Coriander Soup",
+          249
+        ],
+        [
+          "Sweet Corn Soup",
+          249
+        ],
+        [
+          "Tomato Basil Soup",
+          229
+        ]
+      ],
+      "image": "/menu/soups.webp"
+    },
+    {
+      "name": "Oriental",
+      "items": [
+        [
+          "Pepper Corn Crisp",
+          379
+        ],
+        [
+          "Paneer Chilli",
+          359
+        ],
+        [
+          "Mushroom Chilli",
+          379
+        ],
+        [
+          "Manchurian",
+          359
+        ],
+        [
+          "Dragon Paneer",
+          379
+        ],
+        [
+          "Hakka Noodles",
+          329
+        ],
+        [
+          "Schezwan Noodles",
+          339
+        ],
+        [
+          "Chilli Garlic Noodles",
+          339
+        ],
+        [
+          "Chinese Bhel",
+          329
+        ],
+        [
+          "Stir-Fried Veg in Garlic Sauce",
+          329
+        ],
+        [
+          "Broccoli Mushroom in Hunan Sauce",
+          359
+        ],
+        [
+          "Crispy Corn Salt & Pepper",
+          299
+        ],
+        [
+          "Honey Chilli Potatoes",
+          299
+        ]
+      ],
+      "image": "/menu/oriental.webp"
+    },
+    {
+      "name": "Appetizers",
+      "items": [
+        [
+          "Cheese Corn Kebab",
+          289
+        ],
+        [
+          "Dahi Kebab",
+          299
+        ],
+        [
+          "Veg Seekh Kebab",
+          289
+        ],
+        [
+          "Hara Bhara Kebab",
+          289
+        ],
+        [
+          "Beetroot Thecha Kebab",
+          299
+        ],
+        [
+          "Malai Broccoli",
+          339
+        ],
+        [
+          "Paneer Tikka",
+          299
+        ],
+        [
+          "Malai Paneer Tikka",
+          309
+        ],
+        [
+          "Lehsuni Paneer Tikka",
+          309
+        ],
+        [
+          "Aachari Paneer Tikka",
+          309
+        ],
+        [
+          "Pahadi Tikka",
+          329
+        ],
+        [
+          "Paneer Banarasi Tikka",
+          329
+        ],
+        [
+          "Paneer Thecha Tikka",
+          329
+        ],
+        [
+          "Mushroom Tikka",
+          339
+        ],
+        [
+          "Mushroom Multani Tikka",
+          359
+        ],
+        [
+          "Tandoori Thecha Aloo",
+          289
+        ],
+        [
+          "Tandoori Pineapple",
+          299
+        ],
+        [
+          "Dal Makhani Shots",
+          359
+        ]
+      ]
+    },
+    {
+      "name": "Veg Main Course",
+      "items": [
+        [
+          "Palak Lehsuni",
+          289
+        ],
+        [
+          "Palak Corn",
+          299
+        ],
+        [
+          "Mix Veg",
+          299
+        ],
+        [
+          "Veg Diwani Handi",
+          329
+        ],
+        [
+          "Veg Bhuna Masala",
+          329
+        ],
+        [
+          "Veg Angara",
+          339
+        ],
+        [
+          "Veg Kolhapuri",
+          299
+        ],
+        [
+          "Methi Matar Malai",
+          339
+        ],
+        [
+          "Shahi Malai Kofta",
+          359
+        ],
+        [
+          "Rajasthani Kofta",
+          359
+        ],
+        [
+          "Kaju Masala",
+          369
+        ],
+        [
+          "Kaju Matar Malai",
+          379
+        ],
+        [
+          "Stuffed Tomato Masala",
+          359
+        ],
+        [
+          "Aloo Jeera",
+          289
+        ],
+        [
+          "Aloo Dum Punjabi",
+          329
+        ],
+        [
+          "Tawa Mushroom",
+          339
+        ],
+        [
+          "Mushroom Masala",
+          339
+        ],
+        [
+          "Chana Masala",
+          329
+        ],
+        [
+          "Bhindi Masala",
+          289
+        ],
+        [
+          "Bhindi Dry",
+          279
+        ],
+        [
+          "Kurkuri Bhindi",
+          289
+        ],
+        [
+          "Makai Masala",
+          329
+        ],
+        [
+          "Sev Tamatar",
+          289
+        ],
+        [
+          "Sev Bhaji",
+          299
+        ]
+      ],
+      "image": "/menu/veg-main.webp"
+    },
+    {
+      "name": "Paneer Main Course",
+      "items": [
+        [
+          "Paneer Bulbul",
+          359
+        ],
+        [
+          "Paneer Akbari",
+          379
+        ],
+        [
+          "Paneer Angara",
+          339
+        ],
+        [
+          "Paneer Patiala",
+          349
+        ],
+        [
+          "Palak Paneer",
+          329
+        ],
+        [
+          "Paneer Do Pyaaza",
+          339
+        ],
+        [
+          "Paneer Tikka Masala",
+          359
+        ],
+        [
+          "Paneer Tikka Lababdar",
+          359
+        ],
+        [
+          "Paneer Lababdar",
+          339
+        ],
+        [
+          "Paneer Butter Masala",
+          339
+        ],
+        [
+          "Paneer Chatpata",
+          339
+        ],
+        [
+          "Kadhai Paneer",
+          339
+        ],
+        [
+          "Paneer Pasanda",
+          339
+        ],
+        [
+          "Shahi Paneer",
+          359
+        ],
+        [
+          "Paneer Kolhapuri",
+          339
+        ],
+        [
+          "Paneer Kaju Masala",
+          389
+        ]
+      ],
+      "image": "/menu/paneer.webp"
+    },
+    {
+      "name": "Dal",
+      "items": [
+        [
+          "Plain Dal",
+          289
+        ],
+        [
+          "Dal Fry",
+          319
+        ],
+        [
+          "Dal Tadka",
+          329
+        ],
+        [
+          "Dal Makhani",
+          359
+        ],
+        [
+          "Dal Mughlai",
+          339
+        ],
+        [
+          "Snack Dal with Papad",
+          359
+        ]
+      ],
+      "image": "/menu/dal.webp"
+    },
+    {
+      "name": "Rice",
+      "items": [
+        [
+          "Plain Rice",
+          279
+        ],
+        [
+          "Jeera Rice",
+          289
+        ],
+        [
+          "Onion Jeera Rice",
+          299
+        ],
+        [
+          "Green Peas Pulao",
+          299
+        ],
+        [
+          "Tomato Onion Rice",
+          319
+        ],
+        [
+          "Curd Rice",
+          299
+        ],
+        [
+          "Masala Rice",
+          319
+        ],
+        [
+          "Lemon Rice",
+          319
+        ],
+        [
+          "Veg Pulao",
+          329
+        ],
+        [
+          "Paneer Pulao",
+          339
+        ],
+        [
+          "Tawa Pulao",
+          339
+        ],
+        [
+          "Veg Biryani",
+          339
+        ],
+        [
+          "Hyderabadi Biryani",
+          349
+        ]
+      ],
+      "image": "/menu/rice.webp"
+    },
+    {
+      "name": "Breads",
+      "items": [
+        [
+          "Tandoori Roti Plain",
+          45
+        ],
+        [
+          "Tandoori Roti Butter",
+          55
+        ],
+        [
+          "Tandoori Naan Plain",
+          55
+        ],
+        [
+          "Tandoori Naan Butter",
+          65
+        ],
+        [
+          "Garlic Naan",
+          65
+        ],
+        [
+          "Cheese Garlic Naan",
+          95
+        ],
+        [
+          "Mix Veg Kulcha",
+          75
+        ],
+        [
+          "Thecha Aloo Kulcha",
+          85
+        ],
+        [
+          "Cheese Corn Kulcha",
+          95
+        ],
+        [
+          "Paneer Kulcha",
+          95
+        ],
+        [
+          "Lacha Paratha",
+          65
+        ],
+        [
+          "Missi Roti",
+          75
+        ],
+        [
+          "Choice of Paratha",
+          125,
+          "Aloo, Paneer, Gobhi or Aachari",
+          [
+            "paratha"
+          ]
+        ]
+      ],
+      "image": "/menu/breads.webp"
+    },
+    {
+      "name": "Curd & Raita",
+      "items": [
+        [
+          "Plain Curd",
+          89
+        ],
+        [
+          "Boondi Raita",
+          139
+        ],
+        [
+          "Veg Raita",
+          129
+        ],
+        [
+          "Pineapple Raita",
+          159
+        ]
+      ]
+    },
+    {
+      "name": "Indian Salads",
+      "items": [
+        [
+          "Green Salad",
+          139
+        ],
+        [
+          "Onion Salad",
+          129
+        ],
+        [
+          "Kachumbar Salad",
+          129
+        ],
+        [
+          "Peanut Salad",
+          239
+        ],
+        [
+          "Chana Roast",
+          239
+        ],
+        [
+          "Bhungara Pyaaz",
+          259
+        ]
+      ],
+      "image": "/menu/indian-salads.webp"
+    },
+    {
+      "name": "Papad & Sides",
+      "items": [
+        [
+          "Plain Papad",
+          49
+        ],
+        [
+          "Masala Papad",
+          89
+        ],
+        [
+          "Chane Ka Papad",
+          59
+        ],
+        [
+          "Ghee Khichiya",
+          89
+        ],
+        [
+          "Masala Khichiya",
+          129
+        ],
+        [
+          "Papad Churi",
+          159
+        ],
+        [
+          "Baghari Sev",
+          219
+        ]
+      ],
+      "image": "/menu/papad.webp"
+    }
   ]
 }

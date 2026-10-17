@@ -8,7 +8,7 @@ import { useCart, cartCount } from '../stores/cart';
 import { computeBill, formatINR } from '../lib/money';
 import { OUTLET_SLUG } from '../lib/supabase';
 import { unlockSound } from '../lib/sound';
-import { CoinIcon, ErrorNote, Spinner } from '../components/ui';
+import { CoinIcon, ErrorNote, Sheet, Spinner } from '../components/ui';
 import { recentOrders, rememberOrder } from '../hooks/useOrderTracking';
 import { useOrderContext } from './useOrderContext';
 import MenuItemRow, { fromPrice } from './MenuItemRow';
@@ -30,6 +30,7 @@ export default function MenuPage() {
   const [vegOnly, setVegOnly] = useState(false);
   const [activeCat, setActiveCat] = useState(null);
   const [openCats, setOpenCats] = useState(() => new Set());
+  const [credits, setCredits] = useState(null);
   const [customizing, setCustomizing] = useState(null);
   const [sheet, setSheet] = useState(null); // 'cart' | 'checkout' | 'login'
   const [returnTo, setReturnTo] = useState(null);
@@ -137,7 +138,7 @@ export default function MenuPage() {
     const [first, ...rest] = (outlet?.name || '').split(' ');
     return { first, rest: rest.join(' ') };
   })();
-  const thumbOf = (c) => c.items.find((i) => i.image_url)?.image_url;
+  const thumbOf = (c) => c.image_url || c.items.find((i) => i.image_url)?.image_url;
 
   if (outletLoading) return <Spinner label="Loading menu" />;
   if (outletError) return <main className="mx-auto max-w-lg p-6"><ErrorNote>{outletError}</ErrorNote></main>;
@@ -312,7 +313,23 @@ export default function MenuPage() {
         <footer className="mt-10 text-center">
           <p className="font-serif text-lg font-semibold uppercase tracking-[0.12em]">{outlet.name}</p>
           {outlet.loyalty_enabled && <p className="mt-1 text-xs text-ink-soft">Earn coins on every order. 1 coin = ₹1 off your next visit.</p>}
+          <button
+            className="mt-3 text-[11px] text-steel-500 underline"
+            onClick={() => fetch('/menu/credits.json').then((r) => r.json()).then(setCredits).catch(() => setCredits([]))}
+          >
+            Photo credits
+          </button>
         </footer>
+        <Sheet open={Boolean(credits)} onClose={() => setCredits(null)} title="Photo credits">
+          <p className="mb-3 text-sm text-ink-soft">Some photos are illustrative and come from openly licensed collections.</p>
+          <ul className="space-y-2 pb-2 text-sm">
+            {(credits || []).filter((c) => !['cc0', 'pdm'].includes(c.license)).map((c) => (
+              <li key={c.file}>
+                <a href={c.source} target="_blank" rel="noreferrer" className="underline">{c.title || 'Photo'}</a> by {c.creator}, licensed CC {c.license.toUpperCase()}
+              </li>
+            ))}
+          </ul>
+        </Sheet>
       </main>
 
       {count > 0 && !sheet && !customizing && (

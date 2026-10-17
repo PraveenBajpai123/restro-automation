@@ -1,10 +1,17 @@
 import { useState } from 'react';
-import { Plus, Pencil, ImagePlus } from 'lucide-react';
+import { Plus, Pencil, ImagePlus, Star } from 'lucide-react';
 import { staffDb as db, must } from '../lib/supabase';
 import { formatINR, rupeesToPaise } from '../lib/money';
 import { ErrorNote, Sheet, Spinner, VegMark } from '../components/ui';
 import { PageTitle } from './OwnerLayout';
 import { useOutletQuery } from './useOutletData';
+
+/** Uploads a photo to the public menu-images bucket under this outlet's folder and returns its URL */
+export async function uploadMenuImage(outletId, file) {
+  const path = `${outletId}/${Date.now()}-${file.name.replace(/[^\w.-]/g, '_')}`;
+  must(await db.storage.from('menu-images').upload(path, file, { cacheControl: '31536000', upsert: false }));
+  return db.storage.from('menu-images').getPublicUrl(path).data.publicUrl;
+}
 
 const blankItem = { name: '', description: '', price: '', category_id: '', is_veg: true, is_bestseller: false, is_available: true, image_url: '', sort_order: 0, groupIds: [] };
 
@@ -18,10 +25,8 @@ function ItemEditor({ item, categories, groups, outletId, onClose, onSaved }) {
     if (!file) return;
     setBusy(true);
     try {
-      const path = `${outletId}/${Date.now()}-${file.name.replace(/[^\w.-]/g, '_')}`;
-      must(await db.storage.from('menu-images').upload(path, file, { cacheControl: '31536000', upsert: false }));
-      const { data } = db.storage.from('menu-images').getPublicUrl(path);
-      setForm((f) => ({ ...f, image_url: data.publicUrl }));
+      const url = await uploadMenuImage(outletId, file);
+      setForm((f) => ({ ...f, image_url: url }));
     } catch (e) {
       setError(`Image upload failed: ${e.message}`);
     } finally {
@@ -110,7 +115,7 @@ function ItemEditor({ item, categories, groups, outletId, onClose, onSaved }) {
         </fieldset>
         <div className="flex flex-wrap gap-5">
           <label className="flex items-center gap-2"><input type="checkbox" className="h-5 w-5 accent-cardamom" checked={form.is_available} onChange={set('is_available')} /> In stock</label>
-          <label className="flex items-center gap-2"><input type="checkbox" className="h-5 w-5 accent-cardamom" checked={form.is_bestseller} onChange={set('is_bestseller')} /> Bestseller tag</label>
+          <label className="flex items-center gap-2"><input type="checkbox" className="h-5 w-5 accent-cardamom" checked={form.is_bestseller} onChange={set('is_bestseller')} /> Chef's pick (shown at the top of the menu)</label>
         </div>
         <div>
           <span className="label">Photo</span>
@@ -184,17 +189,41 @@ export default function MenuAdmin() {
   return (
     <>
       <PageTitle title="Menu" actions={<button className="btn-primary" onClick={() => open(null)}><Plus size={18} aria-hidden="true" /> New item</button>}>
-        Prices are before GST. Changes appear on customers' phones immediately.
+        Prices are before GST. Tap ★ to add an item to Chef's Picks, and the square beside a section name to give it a photo. Changes appear on customers' phones immediately.
       </PageTitle>
       <ErrorNote>{cats.error || items.error}</ErrorNote>
 
       <div className="space-y-6">
         {sections.map((s) => (
           <section key={s.id || 'none'} className="rounded-2xl bg-white ring-1 ring-steel-200">
-            <header className="flex items-center justify-between border-b border-steel-200 px-5 py-3">
-              <h2 className={`text-lg font-bold ${s.is_active ? '' : 'text-ink-soft line-through'}`}>{s.name}</h2>
+            <header className="flex items-center justify-between gap-3 border-b border-steel-200 px-5 py-3">
+              <div className="flex min-w-0 items-center gap-3">
+                {s.id && (
+                  <label className="relative grid h-11 w-11 flex-none cursor-pointer place-items-center overflow-hidden rounded-lg bg-steel text-ink-soft hover:ring-2 hover:ring-cardamom" title="Section photo: shown in the menu's section pills and headers">
+                    {s.image_url ? <img src={s.image_url} alt="" className="h-full w-full object-cover" /> : <ImagePlus size={18} aria-hidden="true" />}
+                    <span className="sr-only">Change photo for {s.name}</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="sr-only"
+                      onChange={async (e) => {
+                        const file = e.target.files?.[0];
+                        if (!file) return;
+                        try {
+                          const url = await uploadMenuImage(cats.outletId, file);
+                          await cats.mutate((db) => db.from('menu_categories').update({ image_url: url }).eq('id', s.id));
+                        } catch (err) {
+                          cats.setError(`Photo upload failed: ${err.message}`);
+                        }
+                      }}
+                    />
+                  </label>
+                )}
+                <h2 className={`truncate text-lg font-bold ${s.is_active ? '' : 'text-ink-soft line-through'}`}>{s.name}</h2>
+              </div>
               {s.id && (
-                <div className="flex gap-3 text-sm">
+                <div className="flex flex-none gap-3 text-sm">
+                  {s.image_url && <button className="text-ink-soft underline" onClick={() => cats.mutate((db) => db.from('menu_categories').update({ image_url: null }).eq('id', s.id))}>Remove photo</button>}
                   <button className="text-ink-soft underline" onClick={() => { const n = window.prompt('Rename section', s.name); if (n?.trim()) cats.mutate((db) => db.from('menu_categories').update({ name: n.trim() }).eq('id', s.id)); }}>Rename</button>
                   <button className="text-ink-soft underline" onClick={() => cats.mutate((db) => db.from('menu_categories').update({ is_active: !s.is_active }).eq('id', s.id))}>{s.is_active ? 'Hide' : 'Show'}</button>
                 </div>
@@ -216,6 +245,15 @@ export default function MenuAdmin() {
                       </p>
                     </div>
                     <span className="num font-semibold">{formatINR(it.base_price_paise)}</span>
+                    <button
+                      className={`rounded-lg p-2 hover:bg-steel ${it.is_bestseller ? 'text-cardamom' : 'text-steel-500'}`}
+                      onClick={() => items.mutate((db) => db.from('menu_items').update({ is_bestseller: !it.is_bestseller }).eq('id', it.id))}
+                      aria-pressed={it.is_bestseller}
+                      aria-label={`Chef's pick: ${it.name}`}
+                      title={it.is_bestseller ? "In Chef's Picks. Tap to remove" : "Add to Chef's Picks"}
+                    >
+                      <Star size={18} fill={it.is_bestseller ? 'currentColor' : 'none'} />
+                    </button>
                     <button className="rounded-lg p-2 text-ink-soft hover:bg-steel" onClick={() => open(it)} aria-label={`Edit ${it.name}`}><Pencil size={16} /></button>
                   </li>
                 ))}
