@@ -59,7 +59,7 @@ export default function Settings() {
       const n = (v) => (v === '' || v == null ? null : v.trim?.() ?? v);
       must(await db.from('outlets').update({
         name: form.name.trim(), legal_name: n(form.legal_name), gstin: n(form.gstin)?.toUpperCase() || null, fssai_license: n(form.fssai_license),
-        address: n(form.address), phone: n(form.phone), logo_url: n(form.logo_url),
+        address: n(form.address), phone: n(form.phone), logo_url: n(form.logo_url), cover_url: n(form.cover_url),
         cgst_rate_bp: toBp(form.cgst), sgst_rate_bp: toBp(form.sgst), invoice_prefix: form.invoice_prefix.trim() || 'INV',
         loyalty_enabled: form.loyalty_enabled, loyalty_earn_bp: toBp(form.earn), loyalty_max_redeem_bp: toBp(form.maxRedeem),
         loyalty_min_redeem_coins: parseInt(form.loyalty_min_redeem_coins, 10) || 0,
@@ -121,6 +121,7 @@ export default function Settings() {
           {text('address', 'Address', { wide: true })}
           {text('phone', 'Phone')}
           {text('logo_url', 'Logo image URL')}
+          {text('cover_url', 'Cover photo URL (banner at the top of the menu)', { wide: true })}
         </Section>
       </div>
     </form>

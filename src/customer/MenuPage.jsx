@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Search, ShoppingBag } from 'lucide-react';
+import { ChevronDown, Search, ShoppingBag } from 'lucide-react';
 import { useOutlet } from '../hooks/useOutlet';
 import { useMenu } from '../hooks/useMenu';
 import { useCustomer } from '../hooks/useCustomer';
@@ -11,7 +11,7 @@ import { unlockSound } from '../lib/sound';
 import { CoinIcon, ErrorNote, Spinner } from '../components/ui';
 import { recentOrders, rememberOrder } from '../hooks/useOrderTracking';
 import { useOrderContext } from './useOrderContext';
-import MenuItemRow from './MenuItemRow';
+import MenuItemRow, { fromPrice } from './MenuItemRow';
 import ItemCustomizerSheet from './ItemCustomizerSheet';
 import CartSheet from './CartSheet';
 import CheckoutSheet from './CheckoutSheet';
@@ -29,6 +29,7 @@ export default function MenuPage() {
   const [query, setQuery] = useState('');
   const [vegOnly, setVegOnly] = useState(false);
   const [activeCat, setActiveCat] = useState(null);
+  const [openCats, setOpenCats] = useState(() => new Set());
   const [customizing, setCustomizing] = useState(null);
   const [sheet, setSheet] = useState(null); // 'cart' | 'checkout' | 'login'
   const [returnTo, setReturnTo] = useState(null);
@@ -108,48 +109,68 @@ export default function MenuPage() {
     navigate(`/o/${result.tracking_key}`, { state: { justPlaced: true } });
   };
 
+  const searching = Boolean(query.trim()) || vegOnly;
+  const isOpen = (id) => searching || openCats.has(id);
+  const toggleCat = (id) =>
+    setOpenCats((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+
+  // First section starts open, like a printed menu's first page
+  useEffect(() => {
+    if (categories.length && openCats.size === 0) setOpenCats(new Set([categories[0].id]));
+  }, [categories]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const scrollTo = (id) => {
     setActiveCat(id);
-    sectionRefs.current[id]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setOpenCats((prev) => new Set(prev).add(id));
+    requestAnimationFrame(() => sectionRefs.current[id]?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
   };
+
+  const hasNonVeg = categories.some((c) => c.items.some((i) => i.is_veg === false));
+  const picks = categories.flatMap((c) => c.items).filter((i) => i.is_bestseller && i.is_available).slice(0, 10);
+  const thumbOf = (c) => c.items.find((i) => i.image_url)?.image_url;
 
   if (outletLoading) return <Spinner label="Loading menu" />;
   if (outletError) return <main className="mx-auto max-w-lg p-6"><ErrorNote>{outletError}</ErrorNote></main>;
 
   return (
     <div className="mx-auto min-h-dvh max-w-2xl pb-32">
-      <header className="px-5 pb-4 pt-[max(1.25rem,env(safe-area-inset-top))]">
-        <div className="flex items-start justify-between gap-3">
-          <div className="flex items-center gap-3">
-            {outlet.logo_url && <img src={outlet.logo_url} alt="" className="h-11 w-11 rounded-xl object-cover" />}
-            <div>
-              <h1 className="display text-[28px] font-extrabold leading-none">{outlet.name}</h1>
-              {outlet.address && <p className="mt-1 text-sm text-ink-soft">{outlet.address}</p>}
-            </div>
-          </div>
-          {customer.isPhoneUser && wallet && (
-            <span className="flex flex-none items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-sm font-semibold shadow-sm ring-1 ring-steel-200" aria-label={`${wallet.coin_balance} coins`}>
-              <CoinIcon /> <span className="num">{wallet.coin_balance}</span>
-            </span>
-          )}
+      <header className="relative h-56 overflow-hidden bg-gradient-to-br from-cardamom via-ink-700 to-ink-900 text-white">
+        {outlet.cover_url && <img src={outlet.cover_url} alt="" className="absolute inset-0 h-full w-full object-cover" />}
+        <div className="absolute inset-0 bg-gradient-to-b from-ink-900/20 via-ink-900/35 to-ink-900/70" aria-hidden="true" />
+        <div className="relative flex h-full flex-col items-center justify-center px-6 pb-6 pt-[env(safe-area-inset-top)] text-center">
+          {outlet.logo_url && <img src={outlet.logo_url} alt="" className="mb-3 h-14 w-14 rounded-2xl object-cover shadow-lg" />}
+          <h1 className="font-serif text-[30px] font-semibold uppercase leading-tight tracking-[0.1em] [text-shadow:0_2px_12px_rgba(0,0,0,.35)]">{outlet.name}</h1>
+          {outlet.address && <p className="mt-1.5 text-sm text-white/85">{outlet.address}</p>}
         </div>
+        {customer.isPhoneUser && wallet && (
+          <span className="absolute right-4 top-[max(1rem,env(safe-area-inset-top))] flex items-center gap-1.5 rounded-full bg-white/95 px-3 py-1.5 text-sm font-semibold text-ink shadow" aria-label={`${wallet.coin_balance} coins`}>
+            <CoinIcon /> <span className="num">{wallet.coin_balance}</span>
+          </span>
+        )}
+      </header>
 
-        <div className="mt-4 flex flex-wrap items-center gap-2">
+      <div className="relative -mt-6 rounded-t-[28px] bg-steel px-5 pt-5">
+        <div className="flex flex-wrap items-center justify-center gap-2">
           {context?.mode ? (
-            <div className="inline-flex rounded-full bg-white p-1 text-sm font-semibold shadow-sm ring-1 ring-steel-200" role="group" aria-label="Order type">
+            <div className="inline-flex rounded-full bg-ink/[0.06] p-1 text-sm font-semibold ring-1 ring-ink/10" role="group" aria-label="Order type">
               {context.canSwitch ? (
                 ['dine_in', 'takeaway'].map((m) => (
                   <button
                     key={m}
                     onClick={() => context.setMode(m)}
                     aria-pressed={context.mode === m}
-                    className={`rounded-full px-3.5 py-1.5 ${context.mode === m ? 'bg-ink text-white' : 'text-ink-soft'}`}
+                    className={`rounded-full px-4 py-1.5 ${context.mode === m ? 'bg-cardamom text-white shadow-sm' : 'text-ink-soft'}`}
                   >
                     {m === 'dine_in' ? `Table ${context.table}` : 'Takeaway'}
                   </button>
                 ))
               ) : (
-                <span className="px-3.5 py-1.5">{context.label}</span>
+                <span className="px-4 py-1.5">{context.label}</span>
               )}
             </div>
           ) : (
@@ -164,68 +185,131 @@ export default function MenuPage() {
             <span className="text-sm text-steel-300">View status</span>
           </Link>
         )}
-      </header>
+      </div>
 
-      <div className="sticky top-0 z-30 border-b border-steel-200 bg-steel/95 backdrop-blur">
-        <div className="flex items-center gap-2 px-5 pt-2">
+      <div className="sticky top-0 z-30 bg-steel/95 pt-3 backdrop-blur">
+        <div className="flex items-center gap-2 px-5">
           <label className="relative flex-1">
             <Search size={18} className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-steel-500" aria-hidden="true" />
-            <input type="search" className="field py-2.5 pl-10" placeholder="Search the menu" value={query} onChange={(e) => setQuery(e.target.value)} aria-label="Search the menu" />
+            <input type="search" className="field rounded-full border-ink/10 bg-white/80 py-2.5 pl-10" placeholder="Search the menu" value={query} onChange={(e) => setQuery(e.target.value)} aria-label="Search the menu" />
           </label>
-          <button
-            onClick={() => setVegOnly((v) => !v)}
-            aria-pressed={vegOnly}
-            className={`flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-semibold ring-1 ${vegOnly ? 'bg-cardamom-light text-cardamom-dark ring-cardamom' : 'bg-white ring-steel-300'}`}
-          >
-            <span className="veg-mark text-cardamom" aria-hidden="true" /> Veg
-          </button>
+          {hasNonVeg && (
+            <button
+              onClick={() => setVegOnly((v) => !v)}
+              aria-pressed={vegOnly}
+              className={`flex items-center gap-2 rounded-full px-3.5 py-2.5 text-sm font-semibold ring-1 ${vegOnly ? 'bg-cardamom text-white ring-cardamom' : 'bg-white/80 ring-ink/10'}`}
+            >
+              <span className="veg-mark text-veg" aria-hidden="true" /> Veg
+            </button>
+          )}
         </div>
         <nav className="flex gap-2 overflow-x-auto px-5 py-3 [scrollbar-width:none]" aria-label="Menu sections">
-          {filtered.map((c) => (
-            <button
-              key={c.id}
-              onClick={() => scrollTo(c.id)}
-              className={`whitespace-nowrap rounded-full px-4 py-1.5 text-sm font-semibold ${activeCat === c.id ? 'bg-ink text-white' : 'bg-white text-ink ring-1 ring-steel-300'}`}
-            >
-              {c.name}
-            </button>
-          ))}
+          {filtered.map((c) => {
+            const on = activeCat === c.id;
+            const thumb = thumbOf(c);
+            return (
+              <button
+                key={c.id}
+                onClick={() => scrollTo(c.id)}
+                aria-current={on ? 'true' : undefined}
+                className={`flex flex-none items-center gap-2 whitespace-nowrap rounded-full border py-1 text-sm ${thumb ? 'pl-1 pr-4' : 'px-4 py-1.5'} ${on ? 'border-cardamom bg-cardamom font-semibold text-white' : 'border-ink/10 bg-ink/[0.08] text-ink'}`}
+              >
+                {thumb && <img src={thumb} alt="" className="h-8 w-8 rounded-full object-cover" />}
+                {c.name}
+              </button>
+            );
+          })}
         </nav>
       </div>
 
       <main className="px-5">
-        {notice && <div className="mt-4"><ErrorNote>{notice}</ErrorNote></div>}
-        {menuError && <div className="mt-4"><ErrorNote onRetry={reload}>{menuError}</ErrorNote></div>}
+        {notice && <div className="mt-2"><ErrorNote>{notice}</ErrorNote></div>}
+        {menuError && <div className="mt-2"><ErrorNote onRetry={reload}>{menuError}</ErrorNote></div>}
+
+        {!searching && picks.length > 0 && (
+          <section className="pt-4" aria-labelledby="picks">
+            <h2 id="picks" className="text-center font-serif text-[19px] font-semibold">Chef's Picks</h2>
+            <p className="mt-0.5 text-center text-[13px] text-ink-soft">Our signature dishes, made to perfection</p>
+            <ul className="-mx-5 mt-4 flex gap-3 overflow-x-auto px-5 pb-1 [scrollbar-width:none]">
+              {picks.map((i) => (
+                <li key={i.id} className="w-36 flex-none">
+                  <button onClick={() => onAdd(i)} className="block w-full text-center" aria-label={`Add ${i.name}`}>
+                    {i.image_url ? (
+                      <img src={i.image_url} alt="" loading="lazy" className="aspect-square w-full rounded-2xl bg-steel-200 object-cover" />
+                    ) : (
+                      <span className="grid aspect-square w-full place-items-center rounded-2xl bg-gradient-to-br from-cardamom-light to-steel-200 font-serif text-4xl font-semibold text-cardamom" aria-hidden="true">
+                        {i.name.charAt(0)}
+                      </span>
+                    )}
+                    <span className="mt-2 block truncate text-[13px] font-medium">{i.name}</span>
+                    <span className="num block font-serif text-[17px] font-semibold">{formatINR(fromPrice(i))}</span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
         {loading ? (
           <Spinner label="Loading menu" />
         ) : filtered.length === 0 ? (
-          <p className="py-16 text-center text-ink-soft">{query || vegOnly ? 'Nothing matches. Try another search.' : 'The menu is empty for now.'}</p>
+          <p className="py-16 text-center text-ink-soft">{searching ? 'Nothing matches. Try another search.' : 'The menu is empty for now.'}</p>
         ) : (
-          filtered.map((c) => (
-            <section key={c.id} ref={(el) => (sectionRefs.current[c.id] = el)} className="scroll-mt-32 pt-6" aria-labelledby={`cat-${c.id}`}>
-              <h2 id={`cat-${c.id}`} className="display text-2xl font-bold">{c.name}</h2>
-              <div className="divide-y divide-steel-300/70">
-                {c.items.map((item) => (
-                  <MenuItemRow
-                    key={item.id}
-                    item={item}
-                    inCartQty={qtyOf(item.id)}
-                    onAdd={() => onAdd(item)}
-                    onSetQty={(q) => {
-                      const line = cart.lines.find((l) => l.itemId === item.id);
-                      if (line) cart.setQty(line.key, q);
-                    }}
-                  />
-                ))}
-              </div>
-            </section>
-          ))
+          <div className="mt-5 space-y-3">
+            {filtered.map((c) => {
+              const open = isOpen(c.id);
+              const thumb = thumbOf(c);
+              return (
+                <section
+                  key={c.id}
+                  ref={(el) => (sectionRefs.current[c.id] = el)}
+                  className="scroll-mt-32 rounded-[14px] border border-ink/10 bg-white/40"
+                >
+                  <h2>
+                    <button
+                      onClick={() => toggleCat(c.id)}
+                      aria-expanded={open}
+                      aria-controls={`cat-${c.id}`}
+                      className="flex w-full items-center gap-3 px-4 py-3.5 text-left"
+                    >
+                      {thumb && <img src={thumb} alt="" className="h-10 w-10 flex-none rounded-lg object-cover" />}
+                      <span className="flex-1 font-serif text-[18px] font-semibold text-cardamom">{c.name}</span>
+                      <span className="num text-xs text-ink-soft">{c.items.length}</span>
+                      <ChevronDown size={18} className={`text-ink-soft transition-transform ${open ? 'rotate-180' : ''}`} aria-hidden="true" />
+                    </button>
+                  </h2>
+                  {open && (
+                    <ul id={`cat-${c.id}`} className="divide-y divide-ink/[0.07] px-4 pb-1">
+                      {c.items.map((item) => (
+                        <MenuItemRow
+                          key={item.id}
+                          item={item}
+                          showVeg={hasNonVeg}
+                          inCartQty={qtyOf(item.id)}
+                          onAdd={() => onAdd(item)}
+                          onSetQty={(q) => {
+                            const line = cart.lines.find((l) => l.itemId === item.id);
+                            if (line) cart.setQty(line.key, q);
+                          }}
+                        />
+                      ))}
+                    </ul>
+                  )}
+                </section>
+              );
+            })}
+          </div>
         )}
+
+        <footer className="mt-10 text-center">
+          <p className="font-serif text-lg font-semibold uppercase tracking-[0.12em]">{outlet.name}</p>
+          {outlet.loyalty_enabled && <p className="mt-1 text-xs text-ink-soft">Earn coins on every order. 1 coin = ₹1 off your next visit.</p>}
+        </footer>
       </main>
 
       {count > 0 && !sheet && !customizing && (
         <div className="fixed inset-x-0 bottom-0 z-30 mx-auto max-w-2xl px-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
-          <button onClick={() => setSheet('cart')} className="flex w-full items-center justify-between rounded-2xl bg-cardamom px-5 py-4 text-white shadow-xl hover:bg-cardamom-dark">
+          <button onClick={() => setSheet('cart')} className="flex w-full items-center justify-between rounded-full bg-cardamom px-6 py-4 text-white shadow-xl shadow-ink/20 hover:bg-cardamom-dark">
             <span className="flex items-center gap-3">
               <ShoppingBag size={20} aria-hidden="true" />
               <span className="num font-semibold">{count} item{count > 1 ? 's' : ''}</span>

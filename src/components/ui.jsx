@@ -5,7 +5,7 @@ export function VegMark({ isVeg, className = '' }) {
   if (isVeg === null || isVeg === undefined) return null;
   return (
     <span
-      className={`veg-mark ${isVeg ? 'text-cardamom' : 'nonveg text-chilli'} ${className}`}
+      className={`veg-mark ${isVeg ? 'text-veg' : 'nonveg text-chilli'} ${className}`}
       role="img"
       aria-label={isVeg ? 'Vegetarian' : 'Non-vegetarian'}
     />
@@ -36,7 +36,7 @@ export function Sheet({ open, onClose, title, children, footer, labelledBy = 'sh
       <div className="sheet-backdrop" onClick={onClose} aria-hidden="true" />
       <div ref={ref} tabIndex={-1} role="dialog" aria-modal="true" aria-labelledby={labelledBy} className="sheet outline-none">
         <div className="flex items-start justify-between gap-4 px-5 pb-2 pt-5">
-          <h2 id={labelledBy} className="text-xl font-bold leading-tight">{title}</h2>
+          <h2 id={labelledBy} className="font-serif text-xl font-semibold leading-tight">{title}</h2>
           <button onClick={onClose} className="-mr-2 -mt-1 rounded-full p-2 text-ink-soft hover:bg-steel" aria-label="Close">
             <X size={20} />
           </button>
