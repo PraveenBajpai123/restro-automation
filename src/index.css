@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { -webkit-tap-highlight-color: transparent; }
+  body {
+    @apply bg-steel text-ink font-sans antialiased;
+    font-variation-settings: 'wdth' 100;
+  }
+  :focus-visible { @apply outline-none ring-2 ring-cardamom ring-offset-2 ring-offset-steel; }
+  button { touch-action: manipulation; }
+}
+
+@layer components {
+  .num { font-variant-numeric: tabular-nums; }
+  .display { font-variation-settings: 'wdth' 75, 'opsz' 96; letter-spacing: -0.02em; }
+
+  .btn { @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-3 font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50; }
+  .btn-primary { @apply btn bg-cardamom text-white hover:bg-cardamom-dark; }
+  .btn-quiet { @apply btn bg-white text-ink ring-1 ring-steel-300 hover:bg-steel-100; }
+  .btn-danger { @apply btn bg-chilli text-white hover:brightness-95; }
+
+  .field { @apply w-full rounded-xl border border-steel-300 bg-white px-3.5 py-3 text-base text-ink placeholder:text-steel-500 focus:border-cardamom focus:outline-none focus:ring-2 focus:ring-cardamom/20; }
+  .label { @apply mb-1.5 block text-sm font-medium text-ink-soft; }
+
+  /* Bottom sheet */
+  .sheet-backdrop { @apply fixed inset-0 z-40 bg-ink/40; animation: fade .18s ease-out; }
+  .sheet { @apply fixed inset-x-0 bottom-0 z-50 mx-auto flex max-h-[92dvh] w-full max-w-lg flex-col rounded-t-3xl bg-white shadow-2xl; animation: rise .24s cubic-bezier(.2,.8,.2,1); }
+  @media (min-width: 640px) { .sheet { @apply bottom-6 rounded-3xl; } }
+}
+
+/* FSSAI veg / non-veg marks */
+.veg-mark { display: inline-grid; place-items: center; width: 14px; height: 14px; border: 1.5px solid currentColor; border-radius: 3px; flex: none; }
+.veg-mark::after { content: ''; width: 6px; height: 6px; border-radius: 9999px; background: currentColor; }
+.veg-mark.nonveg::after { width: 0; height: 0; border-radius: 0; background: none; border-left: 4px solid transparent; border-right: 4px solid transparent; border-bottom: 7px solid currentColor; }
+
+@keyframes rise { from { transform: translateY(24px); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes token-in { from { transform: scale(.92); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes pulse-ring { 0% { box-shadow: 0 0 0 0 rgba(242,183,5,.6); } 100% { box-shadow: 0 0 0 18px rgba(242,183,5,0); } }
+
+.token-in { animation: token-in .5s cubic-bezier(.2,.8,.2,1) both; }
+.ready-pulse { animation: pulse-ring 1.6s ease-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
+
+/* Thermal printing (58 mm). Only the element with .print-area is printed. */
+.print-area { display: none; }
+@media print {
+  @page { size: 58mm auto; margin: 0; }
+  body { background: #fff !important; }
+  body * { visibility: hidden; }
+  .print-area, .print-area * { visibility: visible; }
+  .print-area { display: block; position: absolute; left: 0; top: 0; width: 58mm; padding: 2mm; color: #000; font-family: 'Courier New', monospace; font-size: 11px; line-height: 1.3; }
+}

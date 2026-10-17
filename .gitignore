@@ -1,0 +1,13 @@
+node_modules
+dist
+.env
+.env.local
+supabase/.temp
+supabase/.branches
+supabase/functions/.env
+.tmp
+setup/cloud_setup_TEST_ONLY.sql
+
+# Third-party originals kept locally for reference only (ngachoan has no licence and committed keys)
+reference/
+.claude/
